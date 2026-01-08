@@ -1,0 +1,77 @@
+*
+{
+    margin: 0;
+    padding: 0;
+}
+
+.sub_header
+{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.search-bar {
+    width: 40vw;
+    padding: 10px 15px;
+    border-radius: 10px;
+    border: none;
+    background: #2f1d5c;
+    color: #51525E;
+    font-size: 14px;
+    font-family: "Kusanagi", sans-serif;
+    outline: none;
+}
+
+.community-filelist
+{
+    margin-top: 4vh;
+    max-height: 95vh;
+}
+
+.file-list-container-2 {
+    border-radius: 50px;
+    border: none;
+    background-color: var(--color-card-bg);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    min-height: 95vh;
+    max-height: 95vh;
+    box-shadow: var(--shadow-card);
+    overflow-y: auto;
+    padding-right: 1.5rem;
+}
+.file-list-subheading
+{
+    margin-left: 2vw;
+    margin-bottom: 3vh;
+    position: static;
+}
+
+.file-list-container-2::-webkit-scrollbar {
+    width: 8px;
+}
+
+.file-list-container-2::-webkit-scrollbar-track {
+    background: transparent; 
+    border-radius: 10px;
+    margin: 25px 0; 
+}
+
+
+.file-list-container-2::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #A347FF, #4DD0E1);
+    border-radius: 10px;
+}
+
+.file-list-container-2::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.55);
+}
+.interactive-container
+{
+    width: 100%;
+    height: 100%;
+}

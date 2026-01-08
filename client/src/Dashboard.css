@@ -1,0 +1,657 @@
+       @font-face {
+           font-family: 'Keylinx';
+           src: url('/fonts/Keylinx.otf') format('opentype');
+           font-weight: normal;
+           font-style: normal;
+       }
+
+       @font-face {
+           font-family: 'Kusanagi';
+           src: url('/fonts/Kusanagi.otf') format('opentype');
+           font-weight: normal;
+           font-style: italic;
+       }
+
+       body,
+       html {
+           margin: 0;
+           padding: 0;
+           width: 100%;
+           height: 100%;
+           background-color: #0b0c1a;
+           background: linear-gradient(0deg,
+                   rgba(47, 29, 92, 1) 1%,
+                   rgba(20, 16, 45, 1) 70%,
+                   rgba(11, 12, 26, 1) 100%);
+           color: #ffffff;
+           overflow-x: hidden;
+       }
+
+       /* --- Main Page Layout --- */
+       body {
+           display: flex;
+       }
+
+       /* --- UPDATED: Left Section for Sidebar --- */
+       .left-section {
+           width: 144px;
+           flex-shrink: 0;
+           position: relative;
+           display: flex;
+           align-items: flex-start;
+           /* align to top instead of center */
+           justify-content: center;
+           height: 100vh;
+           /* ensure full height */
+       }
+
+
+       .right-section {
+           flex-grow: 1;
+           /* Takes up the remaining space */
+           position: relative;
+       }
+
+       /* --- UTILITY CLASSES --- */
+       .font-kusanagi {
+           font-family: "Kusanagi", sans-serif;
+       }
+
+       .font-keylinx {
+           font-family: "Keylinx", sans-serif;
+       }
+
+       .text-primary {
+           color: #A347FF;
+       }
+
+       .text-secondary {
+           color: #4DD0E1;
+       }
+
+       .flex-center {
+           display: flex;
+           align-items: center;
+           justify-content: center;
+       }
+
+       /* --- CORE STYLES FOR EFFECTS (GLASS CARDS) --- */
+       .glass-card {
+           background-color: rgba(28, 20, 64, 0.1);
+           backdrop-filter: blur(15px);
+           -webkit-backdrop-filter: blur(15px);
+           box-shadow: 0px 4px 50px rgba(0, 0, 0, 0.15),
+               inset 0px 4px 14.8px rgba(0, 0, 0, 0.5),
+               inset 15px 15px 4px -15px rgba(255, 255, 255, 0.5),
+               inset -15px -15px 4px -15px rgba(255, 255, 255, 0.5);
+           border: none;
+           position: relative;
+           overflow: hidden;
+           --glow-x: 50%;
+           --glow-y: 50%;
+           --glow-intensity: 0;
+           --glow-radius: 200px;
+           --glow-color: 163, 71, 255;
+           transition: transform 0.3s ease;
+           width: 100%;
+           height: 100%;
+           box-sizing: border-box;
+       }
+
+       .glass-card::before {
+           content: "";
+           position: absolute;
+           inset: 0;
+           padding: 2px;
+           border-radius: inherit;
+           background: radial-gradient(var(--glow-radius) circle at var(--glow-x) var(--glow-y),
+                   rgba(var(--glow-color), calc(var(--glow-intensity) * 0.9)) 0%,
+                   rgba(77, 208, 225, calc(var(--glow-intensity) * 0.6)) 60%,
+                   transparent 100%);
+           -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+           -webkit-mask-composite: xor;
+           mask-composite: exclude;
+           pointer-events: none;
+           opacity: var(--glow-intensity);
+           transition: opacity 0.3s ease;
+           z-index: 1;
+       }
+
+       .particle {
+           position: absolute;
+           width: 4px;
+           height: 4px;
+           border-radius: 50%;
+           background: rgba(var(--glow-color), 1);
+           box-shadow: 0 0 6px rgba(var(--glow-color), 0.6);
+           pointer-events: none;
+           z-index: 2;
+       }
+
+       .global-spotlight {
+           position: fixed;
+           width: 800px;
+           height: 800px;
+           border-radius: 50%;
+           pointer-events: none;
+           z-index: -1;
+           opacity: 0;
+           transform: translate(-50%, -50%);
+           mix-blend-mode: screen;
+           will-change: transform, opacity;
+       }
+
+       .interactive-container {
+           position: relative;
+           overflow: visible;
+       }
+
+       .card-content {
+           position: absolute;
+           inset: 0;
+           padding: 25px;
+           z-index: 5;
+           box-sizing: border-box;
+           overflow: hidden;
+       }
+
+       /* --- NEW: Sidebar Styles --- */
+       .sidebar {
+           display: flex;
+           flex-direction: column;
+           align-items: center;
+           gap: 20px;
+       }
+
+       .sidebar-logo-container {
+           padding-top: 12px;
+           /* Adjusted padding */
+           padding-bottom: 12px;
+       }
+
+       .glass-circle {
+           background-color: rgba(28, 20, 64, 0.1);
+           backdrop-filter: blur(15px);
+           -webkit-backdrop-filter: blur(15px);
+           box-shadow: 0px 4px 50px rgba(0, 0, 0, 0.15),
+               inset 0px 4px 14.8px rgba(0, 0, 0, 0.5);
+           border-radius: 9999px;
+           display: flex;
+           align-items: center;
+           justify-content: center;
+       }
+
+       .logo-circle {
+           width: 64px;
+           /* Increased size */
+           height: 64px;
+       }
+
+       .logo-text {
+           font-size: 32px;
+           /* Increased size */
+           font-weight: bold;
+           background: linear-gradient(92deg, #A347FF 29%, #4DD0E1 100%);
+           -webkit-background-clip: text;
+           -webkit-text-fill-color: transparent;
+           background-clip: text;
+           color: transparent;
+           font-family: "Kusanagi", sans-serif;
+       }
+
+       .sidebar-rails-container {
+           display: flex;
+           flex-direction: column;
+           align-items: center;
+           gap: 6vh;
+           width: 5vw;
+       }
+
+       .sidebar-rail {
+           width: 5vw;
+           /* Increased width */
+           border-radius: 50px;
+           padding: 44px 8px;
+           display: flex;
+           flex-direction: column;
+           align-items: center;
+           gap: 6vh;
+           /* Increased gap */
+       }
+
+       .nav-icon {
+           color: #A347FF;
+           /* Default icon color */
+           cursor: pointer;
+           transition: color 0.3s ease, transform 0.3s ease;
+       }
+
+       .nav-icon:hover {
+           color: #4DD0E1;
+           /* Hover color */
+           transform: scale(1.1);
+       }
+
+       /* --- UPDATED: Right Section Container --- */
+       .rectangle-bg {
+           position: relative;
+           min-width: 90vw;
+           min-height: 140vh;
+           background-color: rgba(217, 217, 217, 0.05);
+           border-radius: 50px 0 0 50px;
+           padding: 40px 60px;
+           box-sizing: border-box;
+       }
+
+       /* --- REMOVED: Old Sidebar Images --- */
+       /* .sidebar-top-img and .sidebar-left-img rules have been removed */
+
+       /* --- Header --- */
+       .main-header {
+           position: relative;
+           height: 100px;
+           z-index: 10;
+       }
+
+       .text-home {
+           position: absolute;
+           top: 18px;
+           left: 30px;
+           color: #ffffff;
+           font-size: 24px;
+           font-family: "Kusanagi", sans-serif;
+       }
+
+       .search-container {
+           position: absolute;
+           top: 9px;
+           left: 152px;
+           width: 476px;
+           height: 49px;
+       }
+
+       .header-profile-container {
+           position: absolute;
+           right: 0;
+           top: 2px;
+           display: flex;
+           align-items: center;
+           gap: 1vw;
+       }
+
+       .divider-line {
+           position: absolute;
+           top: 122px;
+           left: 0;
+           width: 100%;
+           height: 1px;
+           background-color: rgba(255, 255, 255, 0.11);
+           z-index: 1;
+       }
+
+       /* --- Gradient text styles --- */
+       .text-hello {
+           font-size: 32px;
+           font-family: "Kusanagi", sans-serif;
+           background: linear-gradient(92deg, #A347FF 295%, #4DD0E1 100%);
+           -webkit-background-clip: text;
+           -webkit-text-fill-color: transparent;
+           background-clip: text;
+           color: transparent;
+       }
+
+       .text-name {
+           font-size: 64px;
+           font-family: "Kusanagi", sans-serif;
+           background: linear-gradient(91deg, #A347FF 29%, #4DD0E1 100%);
+           -webkit-background-clip: text;
+           -webkit-text-fill-color: transparent;
+           background-clip: text;
+           color: transparent;
+       }
+
+       /* --- Bento Grid Layout --- */
+       .bento-grid {
+           display: grid;
+           grid-template-columns: 410px 473px 310px;
+           grid-template-rows: auto 350px 333px;
+           gap: 30px 40px;
+           justify-content: center;
+       }
+
+       .welcome-text {
+           grid-column: 1 / 3;
+           grid-row: 1 / 2;
+           padding-left: 50px;
+           align-self: end;
+       }
+
+       .card-container-2 {
+           grid-column: 1 / 2;
+           grid-row: 2 / 3;
+       }
+
+       .card-container-5 {
+           grid-column: 1 / 2;
+           grid-row: 3 / 4;
+       }
+
+       .card-container-1 {
+           grid-column: 2 / 3;
+           grid-row: 2 / 3;
+       }
+
+       .card-container-4 {
+           grid-column: 2 / 4;
+           grid-row: 3 / 4;
+       }
+
+       .card-container-3 {
+           grid-column: 3 / 4;
+           grid-row: 1 / 3;
+       }
+
+       /* Card Radii */
+       .card-1,
+       .card-2,
+       .card-3,
+       .card-4,
+       .card-5 {
+           border-radius: 50px;
+       }
+
+       .card-6 {
+           border-radius: 100px;
+       }
+
+
+       /* --- Unchanged Component & Content Styles --- */
+       .search-bg {
+           position: absolute;
+           width: 100%;
+           height: 100%;
+           background-color: #2f1d5c;
+           border-radius: 24.5px;
+       }
+
+       .search-input {
+           position: absolute;
+           top: 14px;
+           left: 30px;
+           width: 350px;
+           height: 20px;
+           border: none;
+           background: transparent;
+           color: #51525E;
+           font-size: 14px;
+           font-family: "Kusanagi", sans-serif;
+           outline: none;
+       }
+
+       .search-icon-bg {
+           position: absolute;
+           top: 6px;
+           left: 429px;
+           width: 38px;
+           height: 38px;
+           border-radius: 50%;
+           background: linear-gradient(135deg, #A347FF 0%, #4DD0E1 100%);
+           display: flex;
+           align-items: center;
+           justify-content: center;
+       }
+
+       .search-icon-svg {
+           width: 24px;
+           height: 24px;
+           color: white;
+       }
+
+       .header-profile-name {
+           color: #c7c4ff;
+           font-size: 16px;
+           font-family: "Kusanagi", sans-serif;
+       }
+
+       .card-header {
+           display: flex;
+           justify-content: space-between;
+           align-items: center;
+           margin-bottom: 24px;
+       }
+
+       .card-title {
+           color: #c7c4ff;
+           font-size: 18px;
+           font-family: "Kusanagi", sans-serif;
+       }
+
+       .view-all-btn {
+           padding: 4px 16px;
+           border-radius: 17px;
+           background: linear-gradient(97deg, #A347FF 0%, #4DD0E1 100%);
+           color: #ffffff;
+           font-size: 12px;
+           font-weight: 600;
+           font-family: "Inter", sans-serif;
+           border: none;
+           cursor: pointer;
+       }
+
+       .list-item {
+           display: flex;
+           align-items: flex-start;
+           gap: 12px;
+           margin-bottom: 24px;
+       }
+
+       .list-icon {
+           width: 44px;
+           height: 44px;
+           flex-shrink: 0;
+           color: #A347FF;
+       }
+
+       .list-text-content {
+           flex: 1;
+           min-width: 0;
+       }
+
+       .list-repo-name {
+           color: #b0b0c3;
+           font-size: 16px;
+           font-family: "Keylinx", sans-serif;
+           margin-bottom: 4px;
+       }
+
+       .list-stats {
+           display: flex;
+           align-items: center;
+           gap: 16px;
+           font-size: 12px;
+       }
+
+       .list-stat-item {
+           color: #4DD0E1;
+           font-family: "Keylinx", sans-serif;
+           display: flex;
+           align-items: center;
+           gap: 4px;
+       }
+
+       .stat-icon {
+           width: 16px;
+           height: 16px;
+           color: #A347FF;
+       }
+
+       .teammate-item {
+           display: flex;
+           align-items: center;
+           gap: 16px;
+           margin-bottom: 20px;
+       }
+
+       .teammate-avatar {
+           width: 64px;
+           height: 64px;
+           border-radius: 50%;
+           flex-shrink: 0;
+           background-color: rgba(28, 20, 64, 0.1);
+           backdrop-filter: blur(15px);
+           display: flex;
+           align-items: center;
+           justify-content: center;
+       }
+
+       .teammate-icon {
+           width: 30px;
+           height: 30px;
+           color: #A347FF;
+       }
+
+       .teammate-info {
+           min-width: 0;
+       }
+
+       .teammate-name-text {
+           color: #b0b0c3;
+           font-size: 18px;
+           font-family: "Keylinx", sans-serif;
+           margin-bottom: 2px;
+       }
+
+       .teammate-email-text {
+           color: #b0b0c3;
+           font-size: 12px;
+           font-family: "Keylinx", sans-serif;
+       }
+
+       .project-card-item {
+           background-color: rgba(255, 255, 255, 0.05);
+           border-radius: 29px;
+           padding: 16px;
+           margin-bottom: 14px;
+       }
+
+       .project-card-row {
+           display: flex;
+           align-items: center;
+           justify-content: space-between;
+           gap: 16px;
+       }
+
+       .open-project-btn {
+           padding: 8px 20px;
+           border-radius: 12px;
+           background: linear-gradient(97deg, #A347FF 0%, #4DD0E1 100%);
+           color: #ffffff;
+           font-size: 14px;
+           font-weight: 600;
+           font-family: "Inter", sans-serif;
+           border: none;
+           cursor: pointer;
+           white-space: nowrap;
+       }
+
+       .leaderboard-container {
+           padding: 20px 12px;
+       }
+
+       .leaderboard-title {
+           text-align: center;
+           margin-bottom: 24px;
+       }
+
+       .leaderboard-list {
+           position: relative;
+           padding-top: 16px;
+       }
+
+       .leaderboard-item {
+           background-color: rgba(255, 255, 255, 0.05);
+           border-radius: 6px;
+           padding: 8px;
+           display: flex;
+           align-items: center;
+           gap: 8px;
+           margin-bottom: 20px;
+           position: relative;
+           z-index: 10;
+       }
+
+       .rank-dot {
+           width: 12px;
+           height: 12px;
+           border-radius: 50%;
+           background-color: rgba(217, 217, 217, 0.1);
+           display: flex;
+           align-items: center;
+           justify-content: center;
+           flex-shrink: 0;
+       }
+
+       .rank-dot-inner {
+           width: 6px;
+           height: 6px;
+           border-radius: 50%;
+           background-color: #4DD0E1;
+       }
+
+       .rank-number {
+           color: white;
+           font-family: 'Asterion', sans-serif;
+           font-size: 24px;
+           width: 28px;
+           flex-shrink: 0;
+       }
+
+       .leaderboard-avatar-container {
+           width: 36px;
+           height: 36px;
+           border-radius: 50%;
+           background-color: rgba(28, 20, 64, 0.1);
+           backdrop-filter: blur(15px);
+           display: flex;
+           align-items: center;
+           justify-content: center;
+           flex-shrink: 0;
+       }
+
+       .leaderboard-avatar-icon {
+           width: 16px;
+           height: 16px;
+           color: #A347FF;
+       }
+
+       .leaderboard-name {
+           color: #b0b0c3;
+           font-family: "Kusanagi", sans-serif;
+           font-size: 14px;
+           flex: 1;
+       }
+
+       .leaderboard-stats {
+           text-align: right;
+           flex-shrink: 0;
+       }
+
+       .leaderboard-count {
+           color: #b0b0c3;
+           font-family: "Kusanagi", sans-serif;
+           font-size: 14px;
+           line-height: 1;
+       }
+
+       .leaderboard-label {
+           color: #b0b0c3;
+           font-family: "Kusanagi", sans-serif;
+           font-size: 6px;
+           line-height: 1;
+       }
+
+       .logo {
+           width: 12vw;
+           border-radius: 50%;
+           object-fit: cover;
+       }

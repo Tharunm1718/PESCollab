@@ -1,0 +1,115 @@
+@font-face {
+    font-family: 'Keylinx';
+    src: url('/fonts/Keylinx.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Kusanagi';
+    src: url('/fonts/Kusanagi.otf') format('opentype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+.IssuesSection {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 5vh;
+}
+
+
+.file-list-subheading {
+    font-family: 'Kusanagi', sans-serif;
+    font-size: 20px;
+    color: #C7C4FF;
+}
+
+.description {
+    font-family: "Inter", sans-serif;
+    font-size: 16px;
+    color: #B0B0C3;
+    margin-top: 2vh;
+    margin-left: 10vh;
+}
+
+.project-title {
+    font-family: 'Keylinx', sans-serif;
+    font-size: 36px;
+    color: #C7C4FF;
+    margin-top: 2vh;
+}
+
+.divider_line {
+
+    height: 3px;
+    background-color: rgba(255, 255, 255, 0.11);
+    z-index: 1;
+}
+
+.file-item {
+    margin-top: 2vh;
+}
+
+.attachments {
+    font-family: 'Kusanagi', sans-serif;
+    font-size: 20px;
+    color: #C7C4FF;
+    margin-top: 2vh;
+}
+
+.file-download-btn {
+    background: linear-gradient(97deg, #a347ff, #4dd0e1);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap:2vh;
+}
+.contibution-file
+{
+    display: flex;
+    flex-direction: column;
+}
+
+.contributor-details
+{
+    display: flex;
+    gap:2vw;
+    align-items: center;
+    justify-content: center;
+}
+.contribution-file-content
+{
+    display: flex;
+    gap:1vw;
+    align-items: center;
+}
+.file-item-label
+{
+    font-family: "Inter", sans-serif;
+    font-size: 20px;
+    color:#C7C4FF;
+}
+.contributor-name
+{
+    font-family: Kusanagi, sans-serif;
+    color:#B0B0C3;
+    font-size: 14px;
+
+}
+
+.contributor-email
+{
+    font-family: "Inter", sans-serif;
+    color:#4DD0E1;
+    font-size: 16px;
+    margin-top: 3px;
+}
