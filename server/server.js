@@ -112,29 +112,6 @@ app.get("/yourprojects", async (req, res) => {
 });
 
 
-app.post("/uploadproject", upload.array("files"), async (req, res) => {
-  const selectedFiles = req.files;
-  const bufferfiles = []
-
-  if (!selectedFiles || selectedFiles.length === 0) {
-    return res.status(400).json({ success: false, message: "No files uploaded." });
-  }
-  selectedFiles.forEach((file) => {
-    const filename = file.originalname;
-    bufferfiles.push({ id: uuidv4(), name: filename, type: "file" });
-  });
-
-  req.session.filename = bufferfiles;
-  console.log("Session updated with files:", req.session.filename);
-
-  res.json({
-    success: true,
-    message: "Files uploaded to session!",
-    files: bufferfiles
-  });
-});
-
-
 app.post("/createproject", upload.array("files"), async (req, res) => {
   if (!req.session.usn) {
     return res.status(401).json({ success: false, message: "User not logged in" });
