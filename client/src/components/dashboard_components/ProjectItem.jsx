@@ -4,7 +4,7 @@ import { ProjectIcon } from './Icons';
 const ProjectItem = ({ project_id, repoName, views, contributors, mode }) => {
   const navigate = useNavigate();
  function handleOpenProject() {
-    {mode==="PROJECTS" ? navigate(`/yourprojects/${project_id}`) : mode==="USER_PROJECTS" ? navigate(`/yourprojects/${project_id}`) : navigate(`/profileview/${project_id}`)}
+  {mode==="PROJECTS" ? navigate(`/projects/${ project_id}`) : mode==="USER_PROJECTS" ? navigate(`/projects/${ project_id}`) : navigate(`/profileview/${ project_id}`)}
   }
 
   return (

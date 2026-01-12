@@ -24,6 +24,7 @@
     font-family: 'Kusanagi', sans-serif;
     font-size: 20px;
     color: #C7C4FF;
+    width: 100%;
 }
 
 .description {
@@ -112,4 +113,28 @@
     color:#4DD0E1;
     font-size: 16px;
     margin-top: 3px;
+}
+
+.file-list-subheading-div
+{
+    display: flex;
+    gap:40vw
+}
+
+.Contribute-btn
+{
+    background: linear-gradient(97deg, #a347ff, #4dd0e1);
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5vw;
+    width: 15vw;
+    height: 7vh;
+    font-size: 16px;
+    color: aliceblue;
+    font-weight: 600;
+    border: none;
+    border-radius: 10px;
+    padding: 0px 20px;
+    cursor: pointer;
 }

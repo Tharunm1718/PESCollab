@@ -3,7 +3,7 @@ import Header from "./Header";
 import FileList from "./FileList";
 import { useEffect, useState } from "react";
 
-function SingleProjectSection() {
+function SingleProjectSection({title}) {
   const { id } = useParams();
 
   const [project, setProject] = useState(null);
@@ -51,8 +51,10 @@ function SingleProjectSection() {
 
         <FileList
           files={Contributions}
+          title={title}
           subtitle="Issues and Contributions"
           description={project.description}
+          project_id={id}
         />
       </div>
     </div>

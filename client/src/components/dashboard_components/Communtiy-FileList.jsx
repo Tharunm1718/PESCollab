@@ -23,7 +23,7 @@ function CommunityFileList({ mode, data }) {
             />
           ))}
 
-        {mode === "PROJECTS" &&
+        {mode === "PROJECTS" && 
           data.projects.map((project) => (
             <ProjectItem
               key={project.id}

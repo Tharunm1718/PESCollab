@@ -4,13 +4,13 @@ import './Dashboard.css';
 import "./CreateProject.css";
 import "./Singleproject.css";
 
-export default function CreateProject() {
+export default function Publicview() {
 
 
     return (
         <div style={{ display: 'flex' }}>
             <Sidebar />
-            <SingleProjectSection title={"Privateview"}/>
+            <SingleProjectSection title={"Publicview"}/>
         </div>
     );
 }

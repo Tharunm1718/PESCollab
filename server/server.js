@@ -403,9 +403,76 @@ app.get("/profileview/:id", async (req, res) => {
       contributionMap[item.project_id] = (contributionMap[item.project_id] || 0) + 1;
     });
 
-    res.json({ success: true, userdata: userdata, contributionCount: count, projects: projects , projectContibution:contributionMap})
+    res.json({ success: true, userdata: userdata, contributionCount: count, projects: projects, projectContibution: contributionMap })
   } catch (err) {
     console.error(err);
     res.status(500).json({ success: false, message: "Server error" });
   }
 })
+
+app.post("/contribute/:id",upload.array("files"), async (req, res) => {
+  project_id = req.params.id;
+  console.log(project_id);
+  const {data: contributorData, error: contributorError} = await supabase
+    .from("students")
+    .select("id")
+    .eq("usn", req.session.usn)
+    .single();
+
+  if (contributorError) {
+    console.error(contributorError);
+    return res.status(500).json({ success: false, message: "Failed to fetch contributor data" });
+  }
+  
+  const contributor_id = contributorData.id;
+  const { title } = req.body;
+  const files = req.files;
+  try {
+    const { data: contributionData, error: contributionError } = await supabase
+      .from("contributions")
+      .insert({
+        project_id: project_id,
+        contributor_id: contributor_id,
+        title: title
+      })
+      .select()
+      .single();
+    if (contributionError) {
+      console.error(contributionError);
+      return res.status(500).json({ success: false, message: "Failed to create contribution record" });
+    }
+    const newContributionId = contributionData.id;
+
+    if (files && files.length > 0) {
+      for (const file of files) {
+        const filePath = `contributions/${project_id}/${newContributionId}/${file.originalname}`;
+        const { error: uploadError } = await supabase
+          .storage
+          .from('user_files')
+          .upload(filePath, file.buffer, {
+            contentType: file.mimetype,
+            upsert: false
+          });
+        if (uploadError) {
+          console.error(uploadError);
+          continue;
+        }
+        const { data: urlData } = supabase.storage
+          .from('user_files')
+          .getPublicUrl(filePath);
+        const { error: fileDbError } = await supabase
+          .from('contribution_files')
+          .insert({
+            contribution_id: newContributionId,
+            file_url: urlData.publicUrl
+          });
+        if (fileDbError) console.error(fileDbError);
+      }
+    }
+
+    res.json({ success: true, message: "Contribution submitted and files uploaded!" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+});

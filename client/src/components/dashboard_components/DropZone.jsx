@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { Upload } from "lucide-react";
-import { useInteractiveCard } from './useInteractiveEffects'; 
+import { useInteractiveCard } from './useInteractiveEffects';
 
 export default function DropZone({ onFilesAdded }) {
   const fileInputRef = useRef(null);
@@ -12,7 +12,10 @@ export default function DropZone({ onFilesAdded }) {
     const selectedFiles = event.target.files;
     if (selectedFiles && selectedFiles.length > 0) {
       onFilesAdded(selectedFiles);
-      fileInputRef.current.value = ""; 
+      setTimeout(() => {
+        fileInputRef.current.value = "";
+      }, 0);
+
     }
   };
 
@@ -40,10 +43,10 @@ export default function DropZone({ onFilesAdded }) {
   };
 
   return (
-    
+
     <div className="interactive-container" ref={cardRef}>
-      <div 
-        className={`drop-zone glass-card ${isDragging ? "dragging" : ""}`} 
+      <div
+        className={`drop-zone glass-card ${isDragging ? "dragging" : ""}`}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
@@ -70,7 +73,7 @@ export default function DropZone({ onFilesAdded }) {
         </div>
 
         {isDragging && (
-          <div className="drop-zone-overlay" style={{display: 'flex'}}>
+          <div className="drop-zone-overlay" style={{ display: 'flex' }}>
             <p>Drop files here</p>
           </div>
         )}

@@ -1,5 +1,7 @@
 import FileItem from "./FileItem.jsx";
 import { useInteractiveCard } from "./useInteractiveEffects";
+import Handshake from "./assets/handshake.svg"
+import { useNavigate } from "react-router-dom";
 
 export default function FileList({
   files = [],
@@ -7,23 +9,31 @@ export default function FileList({
   title,
   subtitle,
   description,
+  project_id
 }) {
+
   const cardRef = useInteractiveCard();
+  const navigate=useNavigate()
 
   const normalizedItems = files.map((item) => {
     if (subtitle === "Issues and Contributions") {
       return {
-        label: item.title,        
-        downloadId: item.id, 
+        label: item.title,
+        downloadId: item.id,
         contributorName: item.students?.name,
-        contributorEmail: item.students?.email 
+        contributorEmail: item.students?.email
       };
     }
 
     return {
-      label: item.name || item,  
+      label: item.name || item,
     };
   });
+
+  function handleonClick()
+  {
+    navigate(`/contribute/${project_id}`)
+  }
 
   return (
     <div className="file-list-section">
@@ -42,9 +52,19 @@ export default function FileList({
           {subtitle === "Issues and Contributions" && (
             <>
               <div className="IssuesSection">
-                <p className="file-list-subheading">
-                  Issues and Contributions
-                </p>
+                <div className="file-list-subheading-div">
+                  <p className="file-list-subheading">
+                    Issues and Contributions
+                  </p>
+
+                  {title === "Publicview" && (
+                    <button className="Contribute-btn" onClick={handleonClick}>
+                      <img src={Handshake} alt="Contribute" className="handshake-icon" />
+                      <span className="Contribute">Contribute</span>
+                    </button>
+                  )}
+
+                </div>
                 {description && (
                   <p className="description">{description}</p>
                 )}

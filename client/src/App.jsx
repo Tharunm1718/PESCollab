@@ -8,6 +8,8 @@ import CreateProject from './CreateProject';
 import SingleProject from './Singleproject';
 import Community from './Community';
 import Profileview from './ProfileView';
+import Publicview from './PublicProjectView';
+import Contribution from './Contribution'
 
 function App() {
     return (
@@ -20,6 +22,8 @@ function App() {
                     <Route path="/yourprojects/:id" element={<SingleProject />} />
                     <Route path="/community" element={<Community />} />
                     <Route path="/profileview/:id" element={<Profileview />} />
+                    <Route path="/projects/:id" element={<Publicview />} />
+                    <Route path="/contribute/:id" element={<Contribution />} />
                 </Routes>
         </>
     )
