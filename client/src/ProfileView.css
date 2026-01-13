@@ -124,3 +124,10 @@
     gap: 1vw;
     margin-left: 2vw;
  }
+
+ .Profile-info
+    {
+        display: flex;
+        flex-direction: column;
+        gap: 6vh;
+    }

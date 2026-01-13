@@ -1,4 +1,3 @@
-// src/App.jsx
 import React, { useEffect } from 'react';
 import DashboardPage from './dashboard';
 import Login from './Login';
@@ -10,6 +9,7 @@ import Community from './Community';
 import Profileview from './ProfileView';
 import Publicview from './PublicProjectView';
 import Contribution from './Contribution'
+import Settings from './Settings';
 
 function App() {
     return (
@@ -24,6 +24,7 @@ function App() {
                     <Route path="/profileview/:id" element={<Profileview />} />
                     <Route path="/projects/:id" element={<Publicview />} />
                     <Route path="/contribute/:id" element={<Contribution />} />
+                    <Route path="/settings/" element={<Settings />} />
                 </Routes>
         </>
     )

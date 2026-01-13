@@ -453,3 +453,21 @@ app.post("/contribute/:id",upload.array("files"), async (req, res) => {
     res.status(500).json({ success: false, message: "Server error" });
   }
 });
+
+app.get("/settings", async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from("students")
+      .select("name, email, usn, about_me, password")
+      .eq("usn", req.session.usn)
+      .single();
+    if (error) {
+      console.error(error);
+      return res.status(500).json({ success: false, message: "Failed to fetch user settings" });
+    }
+    res.json({ success: true, settings: data });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+});

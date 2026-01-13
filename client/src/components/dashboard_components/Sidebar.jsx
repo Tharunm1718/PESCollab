@@ -1,7 +1,7 @@
 import React from 'react';
 import Logo from './assets/pescolleb_logo.jpeg';
 import { Navigate, useNavigate } from "react-router-dom";
-import { Network } from 'lucide-react';
+import { Network , Settings } from 'lucide-react';
 
 const NavIcon = ({ title, children, onClick }) => (
   <div className="nav-icon" title={title} onClick={onClick}>
@@ -44,8 +44,8 @@ function Sidebar() {
             <NavIcon title="Logout">
                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
             </NavIcon>
-            <NavIcon title="Profile">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <NavIcon title="Settings" onClick={() => navigate('/settings')}>
+                <Settings size={32} />
             </NavIcon>
           </div>
         </div>
