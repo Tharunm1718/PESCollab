@@ -4,13 +4,13 @@ import './Dashboard.css';
 import "./CreateProject.css";
 import "./Setting.css";
 
-export default function Settings() {
+export default function EditProfile() {
 
 
     return (
         <div style={{ display: 'flex' }}>
             <Sidebar />
-            <SettingSection mode="view" />
+            <SettingSection mode="edit" />
         </div>
     );
 }

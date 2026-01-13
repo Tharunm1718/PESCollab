@@ -10,6 +10,7 @@ import Profileview from './ProfileView';
 import Publicview from './PublicProjectView';
 import Contribution from './Contribution'
 import Settings from './Settings';
+import EditProfile from "./Editprofile"
 
 function App() {
     return (
@@ -25,6 +26,7 @@ function App() {
                     <Route path="/projects/:id" element={<Publicview />} />
                     <Route path="/contribute/:id" element={<Contribution />} />
                     <Route path="/settings/" element={<Settings />} />
+                    <Route path="/editprofile/" element={<EditProfile />} />
                 </Routes>
         </>
     )

@@ -40,7 +40,7 @@
     border-radius: 4px;
     background-color: #322f46;
     color: #C7C4FF;
-    padding: 10px 10px;
+    padding: 15px 15px;
     margin-top: 0.1vh;
 }
 
@@ -62,7 +62,7 @@
 
 .USN .input, .Email .input
 {
-    font-weight: 550;
+    font-weight: 500;
     font-size: 1.2rem;
 }
 
@@ -122,7 +122,8 @@
     border-radius: 4px;
     background-color: #322f46;
     color: #C7C4FF;
-    padding: 10px 10px;
+    padding: 15px 15px;
     margin-top: 0.1vh;
     height: 20vh;
+    font-family: sans-serif;
 }

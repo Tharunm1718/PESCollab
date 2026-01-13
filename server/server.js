@@ -387,10 +387,10 @@ app.get("/profileview/:id", async (req, res) => {
   }
 })
 
-app.post("/contribute/:id",upload.array("files"), async (req, res) => {
+app.post("/contribute/:id", upload.array("files"), async (req, res) => {
   project_id = req.params.id;
   console.log(project_id);
-  const {data: contributorData, error: contributorError} = await supabase
+  const { data: contributorData, error: contributorError } = await supabase
     .from("students")
     .select("id")
     .eq("usn", req.session.usn)
@@ -400,7 +400,7 @@ app.post("/contribute/:id",upload.array("files"), async (req, res) => {
     console.error(contributorError);
     return res.status(500).json({ success: false, message: "Failed to fetch contributor data" });
   }
-  
+
   const contributor_id = contributorData.id;
   const { title } = req.body;
   const files = req.files;
@@ -466,6 +466,24 @@ app.get("/settings", async (req, res) => {
       return res.status(500).json({ success: false, message: "Failed to fetch user settings" });
     }
     res.json({ success: true, settings: data });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+});
+
+app.post("/settings/update", async (req, res) => {
+  const { name, email, about_me, password } = req.body;
+  try {
+    const { data, error } = await supabase
+      .from("students")
+      .update({ name, email, about_me, password })
+      .eq("usn", req.session.usn);
+    if (error) {
+      console.error(error);
+      return res.status(500).json({ success: false, message: "Failed to update user settings" });
+    }
+    res.json({ success: true, message: "Settings updated successfully" });
   } catch (err) {
     console.error(err);
     res.status(500).json({ success: false, message: "Server error" });
