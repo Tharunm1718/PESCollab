@@ -399,6 +399,20 @@
            display: flex;
            align-items: center;
            justify-content: center;
+           cursor: pointer;
+           transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+           box-shadow: 0 2px 8px rgba(163, 71, 255, 0.3);
+       }
+
+       .search-icon-bg:hover {
+           transform: translateY(-2px) scale(1.05);
+           box-shadow: 0 4px 12px rgba(163, 71, 255, 0.4),
+                       0 0 0 2px rgba(77, 208, 225, 0.1);
+       }
+
+       .search-icon-bg:active {
+           transform: translateY(0) scale(1);
+           box-shadow: 0 2px 6px rgba(163, 71, 255, 0.3);
        }
 
        .search-icon-svg {
@@ -436,6 +450,36 @@
            font-family: "Inter", sans-serif;
            border: none;
            cursor: pointer;
+           transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+           box-shadow: 0 4px 12px rgba(163, 71, 255, 0.3);
+           position: relative;
+           overflow: hidden;
+       }
+
+       .view-all-btn::before {
+           content: '';
+           position: absolute;
+           top: 0;
+           left: -100%;
+           width: 100%;
+           height: 100%;
+           background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+           transition: left 0.5s;
+       }
+
+       .view-all-btn:hover {
+           transform: translateY(-2px);
+           box-shadow: 0 6px 20px rgba(163, 71, 255, 0.4),
+                       0 0 0 3px rgba(77, 208, 225, 0.1);
+       }
+
+       .view-all-btn:hover::before {
+           left: 100%;
+       }
+
+       .view-all-btn:active {
+           transform: translateY(0);
+           box-shadow: 0 2px 8px rgba(163, 71, 255, 0.3);
        }
 
        .list-item {
@@ -552,6 +596,36 @@
            border: none;
            cursor: pointer;
            white-space: nowrap;
+           transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+           box-shadow: 0 4px 12px rgba(163, 71, 255, 0.3);
+           position: relative;
+           overflow: hidden;
+       }
+
+       .open-project-btn::before {
+           content: '';
+           position: absolute;
+           top: 0;
+           left: -100%;
+           width: 100%;
+           height: 100%;
+           background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+           transition: left 0.5s;
+       }
+
+       .open-project-btn:hover {
+           transform: translateY(-2px);
+           box-shadow: 0 6px 20px rgba(163, 71, 255, 0.4),
+                       0 0 0 3px rgba(77, 208, 225, 0.1);
+       }
+
+       .open-project-btn:hover::before {
+           left: 100%;
+       }
+
+       .open-project-btn:active {
+           transform: translateY(0);
+           box-shadow: 0 2px 8px rgba(163, 71, 255, 0.3);
        }
 
        .leaderboard-container {

@@ -3,27 +3,42 @@
 import { useEffect, useState } from 'react';
 import Card from './ProjectCard';
 import { useNavigate } from 'react-router-dom';
+import Loader from '../Loader';
 
 function CardGrid() {
   const navigate = useNavigate();
   const [cardData, setCardData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  
   const onClick=(id) => {
     navigate(`/yourprojects/${id}`);
   };
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch("http://localhost:3000/yourprojects", {
-        method: "GET",
-        credentials: "include",
-      });
+      try {
+        setLoading(true);
+        const response = await fetch("http://localhost:3000/yourprojects", {
+          method: "GET",
+          credentials: "include",
+        });
 
-      const result = await response.json();
-      console.log("Projects data:", result);
-      setCardData(result.projects || []);
+        const result = await response.json();
+        console.log("Projects data:", result);
+        setCardData(result.projects || []);
+      } catch (error) {
+        console.error('Error fetching projects:', error);
+      } finally {
+        setLoading(false);
+      }
     }
     fetchData();
   }, []);
+
+  if (loading) {
+    return <Loader size="medium" />;
+  }
+
   return (
     <div className="frame">
       {cardData.map(card => (

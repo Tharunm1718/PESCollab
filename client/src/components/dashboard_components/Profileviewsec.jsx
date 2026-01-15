@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Header from "./Header";
 import ProfileDivision from "./ProfileDiv";
-import CommunityFileList from "./Communtiy-FileList"
+import CommunityFileList from "./Communtiy-FileList";
+import Loader from "../Loader";
 
 function Profileviewsection() {
   const { id } = useParams();        
@@ -10,10 +11,12 @@ function Profileviewsection() {
   const [conCount, setconCount]=useState(0);
   const [projects, setProjects]=useState([]);
   const [contributionCounts, setContributionCounts] = useState({});
+  const [loading, setLoading] = useState(true);
   
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true);
         const response = await fetch(
           `http://localhost:3000/profileview/${id}`,
           {
@@ -33,11 +36,23 @@ function Profileviewsection() {
         }
       } catch (err) {
         console.error("Profile fetch failed", err);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchData(); 
   }, [id]);
+
+  if (loading) {
+    return (
+      <div className="right-section">
+        <div className="rectangle-bg">
+          <Loader size="medium" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="right-section">

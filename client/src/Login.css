@@ -469,7 +469,8 @@ body {
 
 .login-button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(77, 71, 255, 0.5);
+    box-shadow: 0 6px 20px rgba(163, 71, 255, 0.4),
+                0 0 0 3px rgba(77, 208, 225, 0.1);
 }
 
 .login-button:hover:before {

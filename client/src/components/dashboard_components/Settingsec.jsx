@@ -3,6 +3,7 @@ import Formcomponent from "./Settingformcomponent";
 import { UserPen } from "lucide-react"
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Loader from "../Loader";
 
 function SettingSection({ mode }) {
     const navigate = useNavigate();
@@ -11,10 +12,12 @@ function SettingSection({ mode }) {
     const [userUSN, setUserUSN] = useState("");
     const [userAbout, setUserAbout] = useState("");
     const [userPassword, setUserPassword] = useState("");
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const response = async () => {
             try {
+                setLoading(true);
                 const res = await fetch('http://localhost:3000/settings', {
                     method: 'GET',
                     credentials: 'include',
@@ -31,6 +34,8 @@ function SettingSection({ mode }) {
                 setUserPassword(data.settings.password);
             } catch (error) {
                 console.error('Error fetching user data:', error);
+            } finally {
+                setLoading(false);
             }
         };
         response();
@@ -50,6 +55,16 @@ function SettingSection({ mode }) {
         });
         navigate('/settings');
     };
+
+    if (loading) {
+        return (
+            <div className="right-section">
+                <div className="rectangle-bg">
+                    <Loader size="medium" />
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="right-section">

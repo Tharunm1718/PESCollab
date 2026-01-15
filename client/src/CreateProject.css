@@ -293,11 +293,35 @@ body {
     text-decoration: none;
     border: none;
     cursor: pointer;
-    transition: opacity 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
 }
 
 .btn:hover {
-    opacity: 0.9;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(163, 71, 255, 0.4),
+                0 0 0 3px rgba(77, 208, 225, 0.1);
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+.btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(163, 71, 255, 0.3);
 }
 
 .btn svg {
@@ -325,10 +349,26 @@ body {
     background-image: linear-gradient(to right,
             var(--color-purple-accent),
             var(--color-cyan-accent));
+    box-shadow: 0 4px 12px rgba(163, 71, 255, 0.3);
+}
+
+.btn-gradient:hover {
+    box-shadow: 0 6px 20px rgba(163, 71, 255, 0.4),
+                0 0 0 3px rgba(77, 208, 225, 0.1);
 }
 
 .btn-destructive {
     background-color: var(--color-destructive);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.btn-destructive:hover {
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4),
+                0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.btn-destructive:active {
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
 }
 
 .btn-icon-sm {
@@ -464,13 +504,23 @@ body {
     cursor: pointer;
     color: white;
     opacity: 0.7;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     flex-shrink: 0;
+    padding: 4px;
+    border-radius: 4px;
 }
 
 .file-delete-btn:hover {
     opacity: 1;
     color: var(--color-destructive);
+    transform: translateY(-2px) scale(1.1);
+    background-color: rgba(239, 68, 68, 0.1);
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+}
+
+.file-delete-btn:active {
+    transform: translateY(0) scale(1);
+    box-shadow: 0 1px 4px rgba(239, 68, 68, 0.2);
 }
 
 /* --- Action Buttons Container --- */
@@ -765,17 +815,58 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
 
+.create-project-btn::before,
+.cancel-project-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.create-project-btn:hover,
+.cancel-project-btn:hover {
+    transform: translateY(-2px);
+}
+
+.create-project-btn:hover::before,
+.cancel-project-btn:hover::before {
+    left: 100%;
+}
+
+.create-project-btn:active,
+.cancel-project-btn:active {
+    transform: translateY(0);
 }
 
 .cancel-project-btn
 {
     width: 10vw;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.cancel-project-btn:hover {
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4),
+                0 0 0 3px rgba(239, 68, 68, 0.1);
 }
 
 .create-project-btn
 {
     width: 12vw;
+    box-shadow: 0 4px 12px rgba(163, 71, 255, 0.3);
+}
+
+.create-project-btn:hover {
+    box-shadow: 0 6px 20px rgba(163, 71, 255, 0.4),
+                0 0 0 3px rgba(77, 208, 225, 0.1);
 }
 .form-textarea {
     width: 100%;

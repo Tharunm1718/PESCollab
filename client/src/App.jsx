@@ -11,24 +11,25 @@ import Publicview from './PublicProjectView';
 import Contribution from './Contribution'
 import Settings from './Settings';
 import EditProfile from "./Editprofile"
+import DesktopOnly from './components/DesktopOnly';
 
 function App() {
     return (
-        <>
-                <Routes>
-                    <Route path="/" element={<Login />} />
-                    <Route path="/dashboard" element={<DashboardPage />} />
-                    <Route path="/yourprojects" element={<YourProjects />} />
-                    <Route path="/uploadproject" element={<CreateProject />} />
-                    <Route path="/yourprojects/:id" element={<SingleProject />} />
-                    <Route path="/community" element={<Community />} />
-                    <Route path="/profileview/:id" element={<Profileview />} />
-                    <Route path="/projects/:id" element={<Publicview />} />
-                    <Route path="/contribute/:id" element={<Contribution />} />
-                    <Route path="/settings/" element={<Settings />} />
-                    <Route path="/editprofile/" element={<EditProfile />} />
-                </Routes>
-        </>
+        <DesktopOnly>
+            <Routes>
+                <Route path="/" element={<Login />} />
+                <Route path="/dashboard" element={<DashboardPage />} />
+                <Route path="/yourprojects" element={<YourProjects />} />
+                <Route path="/uploadproject" element={<CreateProject />} />
+                <Route path="/yourprojects/:id" element={<SingleProject />} />
+                <Route path="/community" element={<Community />} />
+                <Route path="/profileview/:id" element={<Profileview />} />
+                <Route path="/projects/:id" element={<Publicview />} />
+                <Route path="/contribute/:id" element={<Contribution />} />
+                <Route path="/settings/" element={<Settings />} />
+                <Route path="/editprofile/" element={<EditProfile />} />
+            </Routes>
+        </DesktopOnly>
     )
 }
 

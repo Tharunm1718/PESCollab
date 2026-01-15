@@ -8,6 +8,7 @@ import LeaderboardCard from './LeaderboardCard';
 import ProjectsListCard from './ProjectsListCard'; // <-- Import new card
 import { ProjectIcon, ContributionIcon } from './Icons';
 import { use } from 'react';
+import Loader from '../Loader';
 
 // Sample Data
 const sampleTeammates = [
@@ -34,26 +35,40 @@ const sampleProjects = [
 const BentoGrid = () => {
   const [username, setUsername] = React.useState('');
   const [myprojects, setMyprojects] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+  
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch('http://localhost:3000/dashboard', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        credentials: "include"
-      });
-      const data = await response.json();
-      setUsername(data.name);
-      const proj = data.projects.map(proj => ({
-        repoName: `${proj.owner_id}/${proj.title}`,
-        views: proj.views || 0,
-        contributors: proj.contributors_count || 0,
-      }));
-      setMyprojects(proj);
+      try {
+        setLoading(true);
+        const response = await fetch('http://localhost:3000/dashboard', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          credentials: "include"
+        });
+        const data = await response.json();
+        setUsername(data.name);
+        const proj = data.projects.map(proj => ({
+          repoName: `${proj.owner_id}/${proj.title}`,
+          views: proj.views || 0,
+          contributors: proj.contributors_count || 0,
+        }));
+        setMyprojects(proj);
+      } catch (error) {
+        console.error('Error fetching dashboard data:', error);
+      } finally {
+        setLoading(false);
+      }
     };
     fetchData();
   }, []);
+
+  if (loading) {
+    return <Loader size="large" />;
+  }
+
   return (
     <div className="bento-grid">
       <WelcomeMessage name={username} />
