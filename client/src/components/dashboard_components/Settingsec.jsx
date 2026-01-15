@@ -14,6 +14,14 @@ function SettingSection({ mode }) {
     const [userPassword, setUserPassword] = useState("");
     const [loading, setLoading] = useState(true);
 
+    const handlelogout = async () => {
+        await fetch("http://localhost:3000/logout", {
+            method: "POST",
+            credentials: "include"
+        });
+        navigate('/');
+    };
+
     useEffect(() => {
         const response = async () => {
             try {
@@ -82,7 +90,7 @@ function SettingSection({ mode }) {
                     {mode === "view" &&
                         <>
                             <button className="save-btn" onClick={() => navigate('/editprofile')}>Edit Profile</button>
-                            <button className="logout-btn">Log Out</button>
+                            <button className="logout-btn" onClick={handlelogout}>Log Out</button>
                         </>
                     }
                     {mode === "edit" &&

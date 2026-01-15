@@ -729,3 +729,14 @@
            border-radius: 50%;
            object-fit: cover;
        }
+
+       .contributor-name
+       {
+              cursor: pointer;
+       }
+
+       .contributor-name:hover
+       {
+              text-decoration: underline;
+              color: #4DD0E1;
+       }

@@ -21,7 +21,8 @@ export default function FileList({
         label: item.title,
         downloadId: item.id,
         contributorName: item.students?.name,
-        contributorEmail: item.students?.email
+        contributorEmail: item.students?.email,
+        contributorUSN: item.students?.usn
       };
     }
 
@@ -33,6 +34,10 @@ export default function FileList({
   function handleonClick()
   {
     navigate(`/contribute/${project_id}`)
+  }
+
+  const handleprofileClick = (contributorUSN) => {
+    navigate(`/profileview/${contributorUSN}`);
   }
 
   return (
@@ -88,6 +93,7 @@ export default function FileList({
                 title={title}
                 contributorName={item.contributorName}
                 contributorEmail={item.contributorEmail}
+                onProfileClick={() => handleprofileClick(item.contributorUSN)}
                 onDelete={
                   onRemoveFile ? () => onRemoveFile(index) : undefined
                 }

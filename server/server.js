@@ -1,12 +1,9 @@
 let express = require("express");
 let app = express();
-const path = require("path");
 const session = require("express-session");
 require("dotenv").config();
-const bodyParser = require('body-parser');
 const { createClient } = require('@supabase/supabase-js')
 const multer = require('multer');
-const { v4: uuidv4 } = require('uuid');
 const MongoStore = require("connect-mongo");
 const mongoose = require("mongoose");
 const cors = require('cors');
@@ -66,19 +63,10 @@ app.use(
 
 const requireAuth = (req, res, next) => {
   if (!req.session || !req.session.usn) {
-    return res.status(401).json({ 
-      success: false, 
-      message: "Unauthorized. Please log in." 
+    return res.status(401).json({
+      success: false,
+      message: "Unauthorized. Please log in."
     });
-  }
-  next();
-};
-
-const logSession = (req, res, next) => {
-  if (req.session && req.session.usn) {
-    console.log(`[Session] User: ${req.session.usn}, Session ID: ${req.sessionID}`);
-  } else {
-    console.log(`[Session] No active session for request to ${req.path}`);
   }
   next();
 };
@@ -92,37 +80,37 @@ app.listen(port, () => {
 app.post("/", async (req, res) => {
   console.log("Login attempt with body:", req.body);
   const { usn, password } = req.body;
-  
+
 
   if (!usn || !password) {
-    return res.status(400).json({ 
-      success: false, 
-      message: "USN and password are required." 
+    return res.status(400).json({
+      success: false,
+      message: "USN and password are required."
     });
   }
 
   if (password !== "pes@student") {
-    return res.status(401).json({ 
-      success: false, 
-      message: "Invalid credentials." 
+    return res.status(401).json({
+      success: false,
+      message: "Invalid credentials."
     });
   }
 
   req.session.usn = usn;
-  
+
   req.session.save(err => {
     if (err) {
       console.error("Session save error:", err);
-      return res.status(500).json({ 
-        success: false, 
-        message: "Error saving session. Please try again." 
+      return res.status(500).json({
+        success: false,
+        message: "Error saving session. Please try again."
       });
     }
     console.log(`[Session] User ${usn} logged in successfully. Session ID: ${req.sessionID}`);
-    res.json({ 
-      success: true, 
+    res.json({
+      success: true,
       message: "Login successful",
-      usn: req.session.usn 
+      usn: req.session.usn
     });
   });
 });
@@ -133,15 +121,15 @@ app.post("/logout", requireAuth, (req, res) => {
   req.session.destroy(err => {
     if (err) {
       console.error("Session destroy error:", err);
-      return res.status(500).json({ 
-        success: false, 
-        message: "Error logging out." 
+      return res.status(500).json({
+        success: false,
+        message: "Error logging out."
       });
     }
     console.log(`[Session] User ${usn} logged out successfully.`);
-    res.json({ 
-      success: true, 
-      message: "Logged out successfully" 
+    res.json({
+      success: true,
+      message: "Logged out successfully"
     });
   });
 });
@@ -153,34 +141,34 @@ app.get("/dashboard", requireAuth, async (req, res) => {
       .select("name")
       .eq("usn", req.session.usn)
       .single();
-    
+
     if (error) {
       console.error("Supabase query error:", error);
-      return res.status(500).json({ 
-        success: false, 
-        message: "Error fetching user data." 
+      return res.status(500).json({
+        success: false,
+        message: "Error fetching user data."
       });
     }
-    
+
     const { data: projData, projError } = await supabase
       .from("projects")
       .select("*")
       .eq("owner_id", req.session.usn);
-    
+
     if (projError) {
       console.error("Supabase query error:", projError);
-      return res.status(500).json({ 
-        success: false, 
-        message: "Error fetching projects." 
+      return res.status(500).json({
+        success: false,
+        message: "Error fetching projects."
       });
     }
-    
+
     res.json({ name: data.name, projects: projData });
   } catch (err) {
     console.error("Dashboard error:", err);
-    res.status(500).json({ 
-      success: false, 
-      message: "Server error" 
+    res.status(500).json({
+      success: false,
+      message: "Server error"
     });
   }
 });
@@ -191,21 +179,21 @@ app.get("/yourprojects", requireAuth, async (req, res) => {
       .from("projects")
       .select("*")
       .eq("owner_id", req.session.usn);
-    
+
     if (error) {
       console.error("Supabase query error:", error);
-      return res.status(500).json({ 
-        success: false, 
-        message: "Error fetching projects." 
+      return res.status(500).json({
+        success: false,
+        message: "Error fetching projects."
       });
     }
-    
+
     res.json({ projects: data });
   } catch (err) {
     console.error("Your projects error:", err);
-    res.status(500).json({ 
-      success: false, 
-      message: "Server error" 
+    res.status(500).json({
+      success: false,
+      message: "Server error"
     });
   }
 });
@@ -306,7 +294,8 @@ app.get("/projectfiles/:id", requireAuth, async (req, res) => {
     created_at,
     students (
       name,
-      email
+      email,
+      usn
     )
   `)
       .eq("project_id", projectId)
@@ -485,7 +474,7 @@ app.get("/profileview/:id", requireAuth, async (req, res) => {
 app.post("/contribute/:id", requireAuth, upload.array("files"), async (req, res) => {
   const project_id = req.params.id;
   console.log(`[Contribute] Project ID: ${project_id}, User: ${req.session.usn}`);
-  
+
   const { data: contributorData, error: contributorError } = await supabase
     .from("students")
     .select("id")
@@ -557,51 +546,53 @@ app.get("/settings", requireAuth, async (req, res) => {
       .select("name, email, usn, about_me, password")
       .eq("usn", req.session.usn)
       .single();
-    
+
     if (error) {
       console.error("Settings fetch error:", error);
-      return res.status(500).json({ 
-        success: false, 
-        message: "Failed to fetch user settings" 
+      return res.status(500).json({
+        success: false,
+        message: "Failed to fetch user settings"
       });
     }
-    
+
     res.json({ success: true, settings: data });
   } catch (err) {
     console.error("Settings error:", err);
-    res.status(500).json({ 
-      success: false, 
-      message: "Server error" 
+    res.status(500).json({
+      success: false,
+      message: "Server error"
     });
   }
 });
 
 app.post("/settings/update", requireAuth, async (req, res) => {
   const { name, email, about_me, password } = req.body;
-  
+
   try {
     const { data, error } = await supabase
       .from("students")
       .update({ name, email, about_me, password })
       .eq("usn", req.session.usn);
-    
+
     if (error) {
       console.error("Settings update error:", error);
-      return res.status(500).json({ 
-        success: false, 
-        message: "Failed to update user settings" 
+      return res.status(500).json({
+        success: false,
+        message: "Failed to update user settings"
       });
     }
-    
-    res.json({ 
-      success: true, 
-      message: "Settings updated successfully" 
+
+    res.json({
+      success: true,
+      message: "Settings updated successfully"
     });
   } catch (err) {
     console.error("Settings update error:", err);
-    res.status(500).json({ 
-      success: false, 
-      message: "Server error" 
+    res.status(500).json({
+      success: false,
+      message: "Server error"
     });
   }
 });
+
+

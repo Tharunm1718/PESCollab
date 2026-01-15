@@ -12,7 +12,7 @@
     font-style: italic;
 }
 
-/* Profile Info Container */
+
 .Profile-info {
     display: flex;
     flex-direction: column;
@@ -21,7 +21,7 @@
     padding: 0 2vw;
 }
 
-/* Form Field Containers */
+
 .Name,
 .Email {
     width: 60%;
@@ -50,7 +50,7 @@
     position: relative;
 }
 
-/* Label Styling */
+
 .namespan {
     font-size: 1.1rem;
     font-weight: 500;
@@ -59,7 +59,7 @@
     letter-spacing: 0.3px;
 }
 
-/* Input Field Styling */
+
 .input {
     padding: 12px 16px;
     font-size: 1rem;
@@ -96,7 +96,6 @@
     background-color: rgba(50, 47, 70, 0.5);
 }
 
-/* Special Input Styling */
 .USN .input,
 .Email .input {
     font-weight: 500;
@@ -107,7 +106,7 @@
     font-family: 'Kusanagi';
 }
 
-/* Textarea Styling */
+
 .aboutme-textarea {
     font-size: 1rem;
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -117,7 +116,8 @@
     padding: 12px 16px;
     margin-top: 0.1vh;
     height: 20vh;
-    min-height: 120px;
+    min-height: 20vh;
+    max-height: 20vh;
     font-family: sans-serif;
     resize: vertical;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -150,7 +150,7 @@
     background-color: rgba(50, 47, 70, 0.5);
 }
 
-/* Caution Text */
+
 .caution {
     font-size: 0.9rem;
     color: #B0B0C3;
@@ -159,7 +159,7 @@
     padding-left: 2px;
 }
 
-/* Button Container */
+
 .btn-container {
     display: flex;
     gap: 1.5vw;
@@ -169,7 +169,6 @@
     align-items: center;
 }
 
-/* Save Button */
 .save-btn {
     padding: 12px 28px;
     font-size: 1rem;
@@ -212,7 +211,7 @@
     box-shadow: 0 2px 8px rgba(163, 71, 255, 0.3);
 }
 
-/* Logout/Cancel Button */
+
 .logout-btn {
     padding: 12px 28px;
     font-size: 1rem;
@@ -239,7 +238,6 @@
     box-shadow: 0 2px 6px rgba(239, 68, 68, 0.2);
 }
 
-/* Responsive adjustments */
 @media (max-width: 1200px) {
     .Name,
     .Email {

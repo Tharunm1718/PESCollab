@@ -7,14 +7,9 @@ function DesktopOnly({ children }) {
 
     useEffect(() => {
         const checkScreenSize = () => {
-            // Check if screen width is less than 1024px (tablet/mobile)
             setIsMobile(window.innerWidth < 1024);
         };
-
-        // Check on mount
         checkScreenSize();
-
-        // Check on resize
         window.addEventListener('resize', checkScreenSize);
 
         return () => window.removeEventListener('resize', checkScreenSize);

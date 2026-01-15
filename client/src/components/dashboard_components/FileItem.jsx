@@ -8,6 +8,7 @@ export default function FileItem({
   downloadId,
   contributorName,
   contributorEmail,
+  onProfileClick
 }) {
   if (!label) return null;
 
@@ -26,7 +27,7 @@ export default function FileItem({
             <div className="contribution-file">
               <p className="file-item-label">{label}</p>
               <div className="contributor-details">
-                <span className="contributor-name">{contributorName}</span>
+                <span className="contributor-name" onClick={onProfileClick}>{contributorName}</span>
                 <span className="contributor-email">Email: {contributorEmail}</span>
               </div>
             </div>

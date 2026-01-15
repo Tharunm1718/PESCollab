@@ -131,3 +131,40 @@
         flex-direction: column;
         gap: 6vh;
     }
+
+.profile-actions {
+    margin-top: 2vh;
+    display: flex;
+    gap: 1vw;
+}
+
+.team-up-btn {
+    padding: 10px 24px;
+    font-size: 0.95rem;
+}
+
+.success-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(97deg, #A347FF 0%, #4DD0E1 100%);
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-family: 'Keylinx', sans-serif;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 12px rgba(163, 71, 255, 0.4);
+    z-index: 10001;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
