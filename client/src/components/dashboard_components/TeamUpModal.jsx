@@ -48,10 +48,10 @@ function TeamUpModal({ isOpen, onClose, studentId, onSuccess }) {
 
       const result = await response.json();
       if (result.success) {
-        onSuccess('Invitation sent successfully');
+        onSuccess('Teammate added successfully');
         onClose();
       } else {
-        setError(result.message || 'Failed to send invitation');
+        setError(result.message || 'Failed to add teammate. Please try again.');
       }
     } catch (err) {
       console.error('Error sending invitation:', err);

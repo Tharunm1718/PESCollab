@@ -6,13 +6,13 @@ import "./toggle.css";
 import "./Community.css";
 
 
-export default function Community() {
+export default function Community({ mode }) {
 
 
     return (
         <div style={{ display: 'flex' }}>
             <Sidebar />
-            <CommunitySection />
+            <CommunitySection mode={mode} />
         </div>
     );
 }

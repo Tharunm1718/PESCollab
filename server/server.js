@@ -262,6 +262,26 @@ app.post("/createproject", requireAuth, upload.array("files"), async (req, res) 
   }
 });
 
+app.post("/incrementview/:id", async (req, res) => {
+  const projectId = req.params.id;
+  try {
+    const { data, error } = await supabaseAdmin
+      .rpc('increment_views', {
+        project_id: projectId
+      });
+
+
+    if (error) {
+      console.error("Increment view error:", error);
+      return res.status(500).json({ success: false, message: "Failed to increment view count" });
+    }
+    res.json({ success: true, message: "View count incremented" });
+  } catch (err) {
+    console.error("Increment view exception:", err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+});
+
 app.get("/projectfiles/:id", requireAuth, async (req, res) => {
   const projectId = req.params.id;
 
@@ -380,7 +400,8 @@ app.get("/community", requireAuth, async (req, res) => {
         id,
         title,
         views
-      `);
+      `)
+      .neq("owner_id", req.session.usn);
 
     if (error) {
       console.error(error);
@@ -402,7 +423,9 @@ app.get("/community", requireAuth, async (req, res) => {
 
     const members = await supabase
       .from("students")
-      .select("usn, name, email");
+      .select("usn, name, email")
+      .neq("usn", req.session.usn);
+
     if (members.error) {
       console.error(members.error);
       return res.status(500).json({ success: false, message: "Failed to fetch members" });
@@ -595,4 +618,87 @@ app.post("/settings/update", requireAuth, async (req, res) => {
   }
 });
 
+app.post("/projects/:projectId/add-member", async (req, res) => {
+  const projectId = req.params.projectId;
+  const { studentId } = req.body;
 
+  if (!studentId) {
+    return res.status(400).json({
+      success: false,
+      message: "studentId is required"
+    });
+  }
+
+  try {
+    const { data, error } = await supabase
+      .from("project_team_members")
+      .insert([
+        {
+          project_id: projectId,
+          student_id: studentId
+        }
+      ]);
+
+    if (error) {
+      if (error.code === "23505") {
+        return res.status(409).json({
+          success: false,
+          message: "Student is already a team member of this project"
+        });
+      }
+
+      console.error("Supabase Insert Error:", error);
+      return res.status(500).json({
+        success: false,
+        message: "Failed to add team member"
+      });
+    }
+
+    return res.json({
+      success: true,
+      message: "Team member added successfully"
+    });
+
+  } catch (err) {
+    console.error("Server Error:", err);
+    return res.status(500).json({
+      success: false,
+      message: "Server error"
+    });
+  }
+});
+
+app.get("/:title/team", requireAuth, async (req, res) => {
+  const projectTitle = req.params.title;
+  try {
+    const { data: projectData, error: projectError } = await supabase
+      .from("projects")
+      .select("id")
+      .eq("title", projectTitle)
+      .single();
+    if (projectError) {
+      console.error(projectError);
+      return res.status(500).json({ success: false, message: "Failed to fetch project" });
+    }
+    const projectId = projectData.id;
+
+    const { data: teamMembers, error: membersError } = await supabase 
+      .from("project_team_members")
+      .select(`
+        students (
+          usn,
+          name,
+          email
+        )
+      `)
+      .eq("project_id", projectId);
+    if (membersError) {
+      console.error(membersError);
+      return res.status(500).json({ success: false, message: "Failed to fetch team members" });
+    }
+    res.json({ success: true, members: teamMembers.map(member => member.students) });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+});

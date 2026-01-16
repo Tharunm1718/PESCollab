@@ -1,16 +1,14 @@
-// src/components/Card.jsx
 import React from 'react';
 
-const Card = ({ title, description, language, views, contributors, handshakeIcon, downloadIcon, onClick }) => {
+const Card = ({ title, description, language, views, contributors, handshakeIcon, downloadIcon, onClick, mode }) => {
   const handleDownloadClick = (e) => {
-    e.stopPropagation(); // Prevent card click when clicking download button
-    // Add download functionality here if needed
+    e.stopPropagation(); 
   };
 
   return (
     <div className="project-card" onClick={onClick}>
       <div className="card-header">
-        <h3 className="card-title" title={title}>{title}</h3>
+        <h3 className="card-title" title={title}>{mode==="teammates" ? `${title} Team` : title}</h3>
         <a 
           href="#" 
           className="card-download-btn"

@@ -2,7 +2,7 @@ import Header from './Header';
 import { GlobalEffects } from './useInteractiveEffects';
 import CardGrid from './CardGrid';
 import { Navigate, useNavigate } from "react-router-dom";
-const YourProjectSection = () => {
+const YourProjectSection = ({mode}) => {
   const navigate = useNavigate();
 
   const handleCreateProject = () => {
@@ -19,7 +19,7 @@ const YourProjectSection = () => {
           <input type="text" placeholder="Search Projects..." className="search-bar" />
           <button className="create-button" onClick={handleCreateProject}>Create Project</button>
         </div>
-        <CardGrid />
+        <CardGrid mode={mode} />
       </div>
     </div>
   );

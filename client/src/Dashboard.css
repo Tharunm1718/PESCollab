@@ -226,9 +226,9 @@
            transition: color 0.3s ease, transform 0.3s ease;
        }
 
-       .nav-icon:hover {
+       .nav-icon:hover,
+       .nav-icon.active {
            color: #4DD0E1;
-           /* Hover color */
            transform: scale(1.1);
        }
 

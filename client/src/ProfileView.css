@@ -21,9 +21,8 @@
      padding: 1.5rem;
      display: flex;
      flex-direction: column;
-     gap: 0.75rem;
-     min-height: 57vh;
-     max-height: 57vh;
+     min-height: 58vh;
+     max-height: 58vh;
      box-shadow: var(--shadow-card);
      overflow-y: hidden;
      padding-right: 1.5rem;
@@ -151,7 +150,7 @@
     color: #fff;
     padding: 12px 24px;
     border-radius: 8px;
-    font-family: 'Keylinx', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 0.9rem;
     box-shadow: 0 4px 12px rgba(163, 71, 255, 0.4);
     z-index: 10001;

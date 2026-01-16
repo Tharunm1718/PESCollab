@@ -1,16 +1,15 @@
-// src/components/CardGrid.jsx
-
 import { useEffect, useState } from 'react';
 import Card from './ProjectCard';
 import { useNavigate } from 'react-router-dom';
 import Loader from '../Loader';
 
-function CardGrid() {
+function CardGrid({mode}) {
   const navigate = useNavigate();
   const [cardData, setCardData] = useState([]);
   const [loading, setLoading] = useState(true);
   
-  const onClick=(id) => {
+  const onClick=(id, title) => {
+    mode==="teammates" ? navigate(`/${title}/team`) :
     navigate(`/yourprojects/${id}`);
   };
 
@@ -51,7 +50,8 @@ function CardGrid() {
           contributors={card.contributors}
           handshakeIcon={card.handshakeIcon}
           downloadIcon={card.downloadIcon}
-          onClick={() => onClick(card.id)}
+          onClick={() => onClick(card.id , card.title)}
+          mode={mode}
         />
       ))}
     </div>

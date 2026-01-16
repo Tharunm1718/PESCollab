@@ -1,35 +1,63 @@
-import { useState , useEffect } from "react";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import Header from "./Header";
 import TabSwitcher from "./toggle";
 import CommunityFileList from "./Communtiy-FileList";
 import Loader from "../Loader";
 
-function CommunitySection() {
+function CommunitySection({ mode }) {
+  const { title } = useParams();
   const [activeTab, setActiveTab] = useState("PROJECTS");
-    const [projects, setProjects] = useState([]);
-    const [contributionCounts, setContributionCounts] = useState({});
-    const [members, setMembers] = useState([]);
-    const [loading, setLoading] = useState(true);
+  const [projects, setProjects] = useState([]);
+  const [contributionCounts, setContributionCounts] = useState({});
+  const [members, setMembers] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
+  useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await fetch("http://localhost:3000/community", {
-          method: "GET",
-          credentials: "include",
-        });
 
-        const result = await response.json();
-        console.log("Projects data:", result);
+        let response;
+        let result;
 
-        if (result.success) {
-          setProjects(result.projects);
-          setContributionCounts(result.contributionCounts);
-          setMembers(result.members);
+        if (mode === "team" && title) {
+          response = await fetch(
+            `http://localhost:3000/${title}/team`,
+            {
+              method: "GET",
+              credentials: "include",
+            }
+          );
+
+          result = await response.json();
+          console.log("Team data:", result);
+
+          if (result.success) {
+            setMembers(result.members);
+          }
+
+        } else {
+          response = await fetch(
+            "http://localhost:3000/community",
+            {
+              method: "GET",
+              credentials: "include",
+            }
+          );
+
+          result = await response.json();
+          console.log("Projects data:", result);
+
+          if (result.success) {
+            setMembers(result.members);
+            setProjects(result.projects);
+            setContributionCounts(result.contributionCounts);
+          }
         }
+
       } catch (err) {
-        console.error("Failed to fetch community projects", err);
+        console.error("Failed to fetch community data", err);
       } finally {
         setLoading(false);
       }
@@ -60,17 +88,20 @@ function CommunitySection() {
             placeholder="Search Projects..."
             className="search-bar"
           />
-
-          <TabSwitcher
-            tabs={["Projects", "Members"]}
-            defaultTab={0}
-            onChange={(index) =>
-              setActiveTab(index === 0 ? "PROJECTS" : "MEMBERS")
-            }
-          />
+          {mode !== "team" && (
+            <TabSwitcher
+              tabs={["Projects", "Members"]}
+              defaultTab={0}
+              onChange={(index) =>
+                setActiveTab(index === 0 ? "PROJECTS" : "MEMBERS")
+              }
+            />
+          )}
         </div>
 
-        <CommunityFileList mode={activeTab} data={{projects, contributionCounts, members}}/>
+        {mode === "team" ? (<CommunityFileList mode={"MEMBERS"} data={{ projects, contributionCounts, members }} />) : (
+          <CommunityFileList mode={activeTab} data={{ projects, contributionCounts, members }} />
+        )}
       </div>
     </div>
   );

@@ -12,6 +12,7 @@ import Contribution from './Contribution'
 import Settings from './Settings';
 import EditProfile from "./Editprofile"
 import DesktopOnly from './components/DesktopOnly';
+import Teammates from './Teammates';
 
 function App() {
     return (
@@ -28,6 +29,8 @@ function App() {
                 <Route path="/contribute/:id" element={<Contribution />} />
                 <Route path="/settings/" element={<Settings />} />
                 <Route path="/editprofile/" element={<EditProfile />} />
+                <Route path="/teammates" element={<Teammates />} />
+                <Route path="/:title/team" element={<Community mode="team" />} />
             </Routes>
         </DesktopOnly>
     )
