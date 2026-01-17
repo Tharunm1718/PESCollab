@@ -138,7 +138,7 @@ app.get("/dashboard", requireAuth, async (req, res) => {
   try {
     const { data, error } = await supabase
       .from("students")
-      .select("name")
+      .select("id, name")
       .eq("usn", req.session.usn)
       .single();
 
@@ -163,7 +163,43 @@ app.get("/dashboard", requireAuth, async (req, res) => {
       });
     }
 
-    res.json({ name: data.name, projects: projData });
+    const { data: Teammates, contribError } = await supabase
+      .from("project_team_members")
+      .select("student_id")
+      .eq("owner_id", data.id);
+    if (contribError) {
+      console.error("Supabase query error:", contribError);
+      return res.status(500).json({
+        success: false,
+        message: "Error fetching contributions."
+      });
+    }
+
+    const { data: TeammatesData, contibutorsError } = await supabase
+      .from("students")
+      .select("name, email")
+      .in("id", Teammates.map(c => c.student_id));
+    if (contibutorsError) {
+      console.error("Supabase query error:", contibutorsError);
+      return res.status(500).json({
+        success: false,
+        message: "Error fetching contributor details."
+      });
+    }
+
+    const{ data:project, error: projecterr } = await supabase
+      .from("projects")
+      .select("*")
+      .neq("owner_id", req.session.usn);
+    if (projecterr) {
+      console.error("Supabase query error:", projecterr);
+      return res.status(500).json({
+        success: false,
+        message: "Error fetching projects."
+      });
+    }
+    console.log("Community Projects:", project);
+    res.json({ name: data.name, projects: projData, teammates: TeammatesData, communityProjects: project });
   } catch (err) {
     console.error("Dashboard error:", err);
     res.status(500).json({
@@ -399,7 +435,10 @@ app.get("/community", requireAuth, async (req, res) => {
       .select(`
         id,
         title,
-        views
+        views,
+        students (
+          name
+        )
       `)
       .neq("owner_id", req.session.usn);
 
@@ -682,7 +721,7 @@ app.get("/:title/team", requireAuth, async (req, res) => {
     }
     const projectId = projectData.id;
 
-    const { data: teamMembers, error: membersError } = await supabase 
+    const { data: teamMembers, error: membersError } = await supabase
       .from("project_team_members")
       .select(`
         students (
@@ -700,5 +739,66 @@ app.get("/:title/team", requireAuth, async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ success: false, message: "Server error" });
+  }
+});
+
+app.get("/auth/me", async (req, res) => {
+  if (!req.session.usn) {
+    return res.status(401).json({ success: false });
+  }
+  const { data, error } = await supabase
+    .from("students")
+    .select("name")
+    .eq("usn", req.session.usn);
+  if (error || data.length === 0) {
+    return res.status(500).json({ success: false });
+  }
+
+  res.json({
+    success: true,
+    usn: req.session.usn,
+    name: data[0].name
+  });
+});
+
+app.get("/project/:id/download", requireAuth, async (req, res) => {
+  const projectId = req.params.id;
+  try {
+    const { data: filesData, error } = await supabase
+      .from("project_files")
+      .select("file_url")
+      .eq("project_id", projectId);
+    if (error || !filesData || filesData.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No files found for this project",
+      });
+    }
+
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename=project-${projectId}.zip`
+    );
+
+    res.setHeader("Content-Type", "application/zip");
+
+    const archive = archiver("zip", { zlib: { level: 9 } });
+    archive.pipe(res);
+    for (const file of filesData) {
+      const fileUrl = file.file_url;
+      const fileName = fileUrl.split("/").pop();
+      const response = await axios.get(fileUrl, {
+        responseType: "stream",
+      });
+      archive.append(response.data, { name: fileName });
+    }
+    archive.finalize();
+  }
+  catch (err) {
+    console.error("Project ZIP error:", err);
+    res.status(500).json({
+      success: false,
+      message: "Failed to download project files",
+    });
   }
 });

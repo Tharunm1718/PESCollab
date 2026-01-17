@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react';
 import DashboardPage from './dashboard';
 import Login from './Login';
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import YourProjects from './Yourprojects';
 import CreateProject from './CreateProject';
 import SingleProject from './Singleproject';
@@ -13,6 +12,7 @@ import Settings from './Settings';
 import EditProfile from "./Editprofile"
 import DesktopOnly from './components/DesktopOnly';
 import Teammates from './Teammates';
+import MyProfileRedirect from './MyProfile';
 
 function App() {
     return (
@@ -31,6 +31,7 @@ function App() {
                 <Route path="/editprofile/" element={<EditProfile />} />
                 <Route path="/teammates" element={<Teammates />} />
                 <Route path="/:title/team" element={<Community mode="team" />} />
+                <Route path="/myprofile" element={<MyProfileRedirect />} />
             </Routes>
         </DesktopOnly>
     )

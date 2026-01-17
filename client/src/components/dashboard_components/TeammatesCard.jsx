@@ -1,9 +1,10 @@
-import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import TeammateItem from './TeammateItem';
-import { useInteractiveCard } from './useInteractiveEffects'; // <-- 1. Import
+import { useInteractiveCard } from './useInteractiveEffects'; 
 
 const TeammatesCard = ({ teammates }) => {
-  const cardRef = useInteractiveCard(); // <-- 2. Call hook
+  const navigate = useNavigate();
+  const cardRef = useInteractiveCard(); 
 
   return (
     // 3. Attach ref
@@ -12,7 +13,7 @@ const TeammatesCard = ({ teammates }) => {
         <div className="card-content">
           <div className="card-header">
             <h3 className="card-title">Your Teammates</h3>
-            <button className="view-all-btn">View All</button>
+            <button className="view-all-btn" onClick={() => navigate('/teammates')}>View All</button>
           </div>
           <div className="teammate-list">
             {teammates.map((mate, index) => (

@@ -52,6 +52,7 @@ function CardGrid({mode}) {
           downloadIcon={card.downloadIcon}
           onClick={() => onClick(card.id , card.title)}
           mode={mode}
+          id={card.id}
         />
       ))}
     </div>

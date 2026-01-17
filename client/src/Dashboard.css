@@ -407,7 +407,7 @@
        .search-icon-bg:hover {
            transform: translateY(-2px) scale(1.05);
            box-shadow: 0 4px 12px rgba(163, 71, 255, 0.4),
-                       0 0 0 2px rgba(77, 208, 225, 0.1);
+               0 0 0 2px rgba(77, 208, 225, 0.1);
        }
 
        .search-icon-bg:active {
@@ -470,7 +470,7 @@
        .view-all-btn:hover {
            transform: translateY(-2px);
            box-shadow: 0 6px 20px rgba(163, 71, 255, 0.4),
-                       0 0 0 3px rgba(77, 208, 225, 0.1);
+               0 0 0 3px rgba(77, 208, 225, 0.1);
        }
 
        .view-all-btn:hover::before {
@@ -499,6 +499,7 @@
        .list-text-content {
            flex: 1;
            min-width: 0;
+           margin-top: 2vh;
        }
 
        .list-repo-name {
@@ -566,9 +567,9 @@
        }
 
        .teammate-email-text {
-           color: #b0b0c3;
-           font-size: 12px;
-           font-family: "Keylinx", sans-serif;
+           color: #4DD0E1;
+           font-size: 16px;
+           font-family: "Inter", sans-serif;
        }
 
        .project-card-item {
@@ -616,7 +617,7 @@
        .open-project-btn:hover {
            transform: translateY(-2px);
            box-shadow: 0 6px 20px rgba(163, 71, 255, 0.4),
-                       0 0 0 3px rgba(77, 208, 225, 0.1);
+               0 0 0 3px rgba(77, 208, 225, 0.1);
        }
 
        .open-project-btn:hover::before {
@@ -730,13 +731,27 @@
            object-fit: cover;
        }
 
-       .contributor-name
-       {
-              cursor: pointer;
+       .contributor-name {
+           cursor: pointer;
        }
 
-       .contributor-name:hover
-       {
-              text-decoration: underline;
-              color: #4DD0E1;
+       .contributor-name:hover {
+           text-decoration: underline;
+           color: #4DD0E1;
+       }
+
+       .update-message {
+           color: #b0b0c3;
+           font-family: "Inter", sans-serif;
+           font-size: 14px;
+           text-align: center;
+           margin-top: 50%;
+       }
+
+       .update-message-2 {
+           color: #b0b0c3;
+           font-family: "Inter", sans-serif;
+           font-size: 14px;
+           text-align: center;
+           margin-top: 30%;
        }

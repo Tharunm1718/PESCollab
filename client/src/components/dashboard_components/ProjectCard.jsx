@@ -1,23 +1,31 @@
-import React from 'react';
+import { Download } from "lucide-react"
 
-const Card = ({ title, description, language, views, contributors, handshakeIcon, downloadIcon, onClick, mode }) => {
+const Card = ({ title, description, language, views, contributors, handshakeIcon, downloadIcon, onClick, mode, id }) => {
+
   const handleDownloadClick = (e) => {
-    e.stopPropagation(); 
+    e.stopPropagation();
+    window.location.href =
+      `http://localhost:3000/project/${id}/download`;
   };
 
   return (
     <div className="project-card" onClick={onClick}>
       <div className="card-header">
-        <h3 className="card-title" title={title}>{mode==="teammates" ? `${title} Team` : title}</h3>
-        <a 
-          href="#" 
-          className="card-download-btn"
-          onClick={handleDownloadClick}
-          onMouseDown={(e) => e.stopPropagation()}
-        >
-          <img src={downloadIcon} alt="Download" className="download-icon" />
-          <span>Download</span>
-        </a>
+        <h3 className="card-title" title={title}>{mode === "teammates" ? `${title} Team` : title}</h3>
+        {mode !== "teammates" &&
+          <a
+            href="#"
+            className="card-download-btn"
+            onClick={handleDownloadClick}
+            onMouseDown={(e) => e.stopPropagation()}
+          >
+
+            <Download className="download-icon" />
+            <span>Download</span>
+          </a>
+        }
+
+
       </div>
 
       <p className="card-description" title={description}>
@@ -41,7 +49,7 @@ const Card = ({ title, description, language, views, contributors, handshakeIcon
           <span>{contributors || 0} Contributors</span>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 

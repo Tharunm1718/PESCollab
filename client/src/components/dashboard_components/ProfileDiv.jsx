@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useInteractiveCard } from "./useInteractiveEffects";
 import Footer from "./ProfileDiv-Footer";
 import TeamUpModal from "./TeamUpModal";
 
-function ProfileDivision({user, id, conCount}) {
+function ProfileDivision({ user, id, conCount }) {
     const cardRef = useInteractiveCard();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [successMessage, setSuccessMessage] = useState(null);
+    const [myUSN, setMyUSN] = useState("");
 
     const handleTeamUpClick = () => {
         setIsModalOpen(true);
@@ -22,6 +23,16 @@ function ProfileDivision({user, id, conCount}) {
             setSuccessMessage(null);
         }, 3000);
     };
+
+    useEffect(() => {
+        fetch("http://localhost:3000/auth/me", {
+            credentials: "include"
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) setMyUSN(data.usn);
+            });
+    }, []);
 
     return (
         <>
@@ -47,16 +58,18 @@ function ProfileDivision({user, id, conCount}) {
                                     <span className="email-value">{user.email}</span>
                                 </div>
                             </div>
-                            <div className="profile-actions">
-                                <button className="team-up-btn save-btn" onClick={handleTeamUpClick}>
-                                    Team Up
-                                </button>
-                            </div>
+                            {myUSN !== id &&
+                                <div className="profile-actions">
+                                    <button className="team-up-btn save-btn" onClick={handleTeamUpClick}>
+                                        Team Up
+                                    </button>
+                                </div>
+                            }
                         </div>
                     </div>
                     <div className="footer">
-                        <Footer Count={conCount} title={"Contribution"}/>
-                        <Footer Count={5} title={"Projects"}/>
+                        <Footer Count={conCount} title={"Contribution"} />
+                        <Footer Count={5} title={"Projects"} />
                         <Footer Count={50} title={"TeamMates"} />
                     </div>
                 </div>

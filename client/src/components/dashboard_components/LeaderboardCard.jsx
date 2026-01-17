@@ -11,9 +11,10 @@ const LeaderboardCard = ({ leaders }) => {
       <div className="glass-card card-3 leaderboard-container">
         <h3 className="card-title leaderboard-title">LEADER BOARD</h3>
         <div className="leaderboard-list">
-          {leaders.map((leader) => (
+         { /* leaders.map((leader) => (
             <LeaderboardItem key={leader.rank} rank={leader.rank} name={leader.name} score={leader.score} />
-          ))}
+          )) */ }
+          <p className='update-message'> Leader board will be updated soon</p>
         </div>
       </div>
     </div>

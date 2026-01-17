@@ -5,17 +5,11 @@ import InfoCard from './InfoCard';
 import ListItem from './ListItem';
 import TeammatesCard from './TeammatesCard';
 import LeaderboardCard from './LeaderboardCard';
-import ProjectsListCard from './ProjectsListCard'; // <-- Import new card
+import ProjectsListCard from './ProjectsListCard';
 import { ProjectIcon, ContributionIcon } from './Icons';
-import { use } from 'react';
 import Loader from '../Loader';
 
-// Sample Data
-const sampleTeammates = [
-  { name: 'Chiranth S', email: 'chiranths@gmail.com' },
-  { name: 'Lalith N', email: 'lalithn@gmail.com' },
-  { name: 'Tharun M', email: 'tharunm@gmail.com' },
-];
+
 
 const sampleLeaders = [
   { rank: 1, name: 'Tharun M', score: 500 },
@@ -26,16 +20,14 @@ const sampleLeaders = [
   { rank: 6, name: 'User Six', score: 320 },
 ];
 
-const sampleProjects = [
-  { repoName: 'Tharunm/Agriconnect', views: 5, contributors: 1 },
-  { repoName: 'Tharunm/Portfolio-v2', views: 12, contributors: 1 },
-];
-
 
 const BentoGrid = () => {
   const [username, setUsername] = React.useState('');
   const [myprojects, setMyprojects] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
+  const [teammates, setTeammates] = React.useState([]);
+  const [communityProjects, setCommunityProjects] = React.useState([]);
+  const [contributionCounts, setContributionCounts] = React.useState({});
   
   useEffect(() => {
     const fetchData = async () => {
@@ -56,6 +48,9 @@ const BentoGrid = () => {
           contributors: proj.contributors_count || 0,
         }));
         setMyprojects(proj);
+        setTeammates(data.teammates || []);
+        setCommunityProjects(data.communityProjects || []);
+        setContributionCounts(data.contributionCounts || {});
       } catch (error) {
         console.error('Error fetching dashboard data:', error);
       } finally {
@@ -74,7 +69,7 @@ const BentoGrid = () => {
       <WelcomeMessage name={username} />
 
       <InfoCard title="Your PROJECTS" cardContainerClass="card-container-2" cardClass="card-2">
-        {myprojects.map((proj, index) => (
+        {myprojects.slice(0, 3).map((proj, index) => (
           <ListItem
             key={index}
             repoName={proj.repoName}
@@ -87,16 +82,14 @@ const BentoGrid = () => {
       </InfoCard>
 
       <InfoCard title="Your CONTRIBUTION" cardContainerClass="card-container-5" cardClass="card-5">
-        <ListItem repoName="Tharunm/Agriconnect" views="5" contributors="1">
-          <ContributionIcon />
-        </ListItem>
+        <p className='update-message-2'>Contribution page will be updated soon.</p>
       </InfoCard>
 
-      <TeammatesCard teammates={sampleTeammates} />
+      <TeammatesCard teammates={teammates} />
 
       <LeaderboardCard leaders={sampleLeaders} />
 
-      <ProjectsListCard projects={sampleProjects} /> {/* <-- Use the new card */}
+      <ProjectsListCard projects={communityProjects} contributioncount={contributionCounts} />
 
     </div>
   );

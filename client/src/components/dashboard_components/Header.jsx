@@ -1,16 +1,33 @@
-import React from 'react';
 import SearchBar from './SearchBar';
 import NotificationBell from './NotificationBell';
 import UserProfile from './UserProfile';
+import { useEffect, useState } from 'react';
 
 const Header = (props) => {
+  const [userName, setUserName] = useState(null);
+  useEffect(() => {
+    async function go() {
+      const res = await fetch("http://localhost:3000/auth/me", {
+        credentials: "include"
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        setUserName(data.name);
+      } else {
+        setUserName("Guest");
+      }
+    }
+    go();
+  }, []);
+
   return (
     <header className="main-header">
       <div className="text-home">{props.title}</div>
       {props.title === "HOME" && <SearchBar />}
       <div className="header-profile-container">
         <NotificationBell />
-        <UserProfile name="Tharun M" />
+        <UserProfile name={userName} />
       </div>
     </header>
   );

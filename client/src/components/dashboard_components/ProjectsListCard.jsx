@@ -1,9 +1,10 @@
-import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import ProjectItem from './ProjectItem';
 import { useInteractiveCard } from './useInteractiveEffects'; // <-- 1. Import
 
-const ProjectsListCard = ({ projects }) => {
-  const cardRef = useInteractiveCard(); // <-- 2. Call hook
+const ProjectsListCard = ({ projects ,contributioncount}) => {
+  const navigate = useNavigate();
+  const cardRef = useInteractiveCard(); 
 
   return (
     // 3. Attach ref
@@ -12,15 +13,16 @@ const ProjectsListCard = ({ projects }) => {
         <div className="card-content">
           <div className="card-header">
             <h3 className="card-title">PROJECTS</h3>
-            <button className="view-all-btn" style={{ padding: '6px 20px' }}>View All</button>
+            <button className="view-all-btn" style={{ padding: '6px 20px' }} onClick={() => navigate('/community')}>View All</button>
           </div>
           {projects.map((project, index) => (
             <ProjectItem
               key={index}
-              repoName={project.repoName}
-              views={project.views}
-              contributors={project.contributors}
+              project_id={project.id}
+              repoName={project.title}
+              views={project.views || 0}
               mode={"PROJECTS"}
+              contributors={contributioncount[project.id] || 0}
             />
           ))}
         </div>

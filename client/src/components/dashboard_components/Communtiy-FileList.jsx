@@ -34,6 +34,7 @@ function CommunityFileList({ mode, data }) {
                 data.contributionCounts[project.id] || 0
               }
               mode={mode}
+              name={project.students.name}
             />
           ))}
 
