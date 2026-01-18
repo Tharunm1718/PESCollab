@@ -13,7 +13,7 @@ const axios = require("axios");
 
 let port = 3000
 app.use(cors({
-  origin: "*",
+  origin: 'http://localhost:5173',
   credentials: true
 }));
 app.use(express.json());
@@ -73,11 +73,9 @@ const requireAuth = (req, res, next) => {
 
 
 app.listen(port, () => {
-  console.log("Server is running on http://localhost:3000");
 });
 
 app.post("/", async (req, res) => {
-  console.log("Login attempt with body:", req.body);
   const { usn, password } = req.body;
 
 
@@ -88,7 +86,22 @@ app.post("/", async (req, res) => {
     });
   }
 
-  if (password !== "pes@student") {
+  const { data, error } = await supabase
+    .from("students")
+    .select("password")
+    .eq("usn", usn)
+    .single();
+
+  if (data.password === null || error) {
+    if (password !== "pes@student") {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid credentials."
+      });
+    }
+  }
+
+  else if (password !== data.password) {
     return res.status(401).json({
       success: false,
       message: "Invalid credentials."
@@ -105,7 +118,6 @@ app.post("/", async (req, res) => {
         message: "Error saving session. Please try again."
       });
     }
-    console.log(`[Session] User ${usn} logged in successfully. Session ID: ${req.sessionID}`);
     res.json({
       success: true,
       message: "Login successful",
@@ -125,7 +137,6 @@ app.post("/logout", requireAuth, (req, res) => {
         message: "Error logging out."
       });
     }
-    console.log(`[Session] User ${usn} logged out successfully.`);
     res.json({
       success: true,
       message: "Logged out successfully"
@@ -186,7 +197,7 @@ app.get("/dashboard", requireAuth, async (req, res) => {
       });
     }
 
-    const{ data:project, error: projecterr } = await supabase
+    const { data: project, error: projecterr } = await supabase
       .from("projects")
       .select("*")
       .neq("owner_id", req.session.usn);
@@ -197,7 +208,6 @@ app.get("/dashboard", requireAuth, async (req, res) => {
         message: "Error fetching projects."
       });
     }
-    console.log("Community Projects:", project);
     res.json({ name: data.name, projects: projData, teammates: TeammatesData, communityProjects: project });
   } catch (err) {
     console.error("Dashboard error:", err);
@@ -534,7 +544,6 @@ app.get("/profileview/:id", requireAuth, async (req, res) => {
 
 app.post("/contribute/:id", requireAuth, upload.array("files"), async (req, res) => {
   const project_id = req.params.id;
-  console.log(`[Contribute] Project ID: ${project_id}, User: ${req.session.usn}`);
 
   const { data: contributorData, error: contributorError } = await supabase
     .from("students")
