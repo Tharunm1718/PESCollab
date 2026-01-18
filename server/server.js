@@ -575,6 +575,11 @@ app.post("/contribute/:id", requireAuth, upload.array("files"), async (req, res)
         if (fileDbError) console.error(fileDbError);
       }
     }
+console.log("Received files:", files.map(f => ({
+  name: f.originalname,
+  size: f.size,
+  bufferExists: !!f.buffer
+})));
 
     res.json({ success: true, message: "Contribution submitted and files uploaded!" });
   } catch (error) {
