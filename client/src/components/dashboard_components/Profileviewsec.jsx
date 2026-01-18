@@ -6,30 +6,32 @@ import CommunityFileList from "./Communtiy-FileList";
 import Loader from "../Loader";
 
 function Profileviewsection() {
-  const { id } = useParams();        
+  const { id } = useParams();
   const [user, setUser] = useState(null);
-  const [conCount, setconCount]=useState(0);
-  const [projects, setProjects]=useState([]);
+  const [conCount, setconCount] = useState(0);
+  const [projects, setProjects] = useState([]);
   const [contributionCounts, setContributionCounts] = useState({});
   const [loading, setLoading] = useState(true);
-  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
         const response = await fetch(
-          `http://localhost:3000/profileview/${id}`,
+          `https://pes-collab-server.vercel.app/profileview/${id}`,
           {
             method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`
+            },
             credentials: "include",
           }
         );
 
         const result = await response.json();
-        console.log("User:", result);
 
         if (result.success) {
-          setUser(result.userdata);  
+          setUser(result.userdata);
           setconCount(result.contributionCount)
           setProjects(result.projects)
           setContributionCounts(result.projectContibution)
@@ -41,7 +43,7 @@ function Profileviewsection() {
       }
     };
 
-    fetchData(); 
+    fetchData();
   }, [id]);
 
   if (loading) {
@@ -59,8 +61,8 @@ function Profileviewsection() {
       <div className="rectangle-bg">
         <Header title="PES COMMUNITY" />
         <div className="divider-line"></div>
-        {user && <ProfileDivision user={user} id={id} conCount={conCount}/>}
-        <CommunityFileList mode={"USER_PROJECTS"} data={{projects, contributionCounts}}/>
+        {user && <ProfileDivision user={user} id={id} conCount={conCount} />}
+        <CommunityFileList mode={"USER_PROJECTS"} data={{ projects, contributionCounts }} />
       </div>
     </div>
   );

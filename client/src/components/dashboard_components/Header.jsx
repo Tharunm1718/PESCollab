@@ -7,7 +7,11 @@ const Header = (props) => {
   const [userName, setUserName] = useState(null);
   useEffect(() => {
     async function go() {
-      const res = await fetch("http://localhost:3000/auth/me", {
+      const res = await fetch("https://pes-collab-server.vercel.app/auth/me", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
         credentials: "include"
       });
       const data = await res.json();

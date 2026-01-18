@@ -19,7 +19,7 @@ function TeamUpModal({ isOpen, onClose, studentId, onSuccess }) {
     try {
       setLoading(true);
       setError(null);
-      const response = await fetch('http://localhost:3000/yourprojects', { 
+      const response = await fetch('https://pes-collab-server.vercel.app/yourprojects', { 
         method: 'GET',
         credentials: 'include' 
       });
@@ -37,11 +37,12 @@ function TeamUpModal({ isOpen, onClose, studentId, onSuccess }) {
     try {
       setSending(true);
       setError(null);
-      const response = await fetch(`http://localhost:3000/projects/${projectId}/add-member`, {
+      const response = await fetch(`https://pes-collab-server.vercel.app/projects/${projectId}/add-member`, {
         method: 'POST',
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
         },
         body: JSON.stringify({ studentId }),
       });

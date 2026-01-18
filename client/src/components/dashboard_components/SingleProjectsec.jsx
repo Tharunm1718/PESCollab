@@ -4,7 +4,7 @@ import FileList from "./FileList";
 import { useEffect, useState } from "react";
 import Loader from "../Loader";
 
-function SingleProjectSection({title}) {
+function SingleProjectSection({ title }) {
   const { id } = useParams();
 
   const [project, setProject] = useState(null);
@@ -17,8 +17,12 @@ function SingleProjectSection({title}) {
       try {
         setLoading(true);
         const response = await fetch(
-          `http://localhost:3000/projectfiles/${id}`,
-          { credentials: "include" }
+          `https://pes-collab-server.vercel.app/projectfiles/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          },
+          credentials: "include"
+        }
         );
 
         const data = await response.json();
@@ -28,7 +32,6 @@ function SingleProjectSection({title}) {
           setFiles(data.files);
           setContributions(data.contributions);
         }
-        console.log("Fetched project data:", data);
       } catch (error) {
         console.error("Fetch error:", error);
       } finally {

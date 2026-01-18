@@ -52,16 +52,15 @@ function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = await fetch('http://localhost:3000', {
+        const response = await fetch('https://pes-collab-server.vercel.app/', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ usn: formdata.usn, password: formdata.password }),
             credentials: "include"
         });
         const data = await response.json();
         if (data.success) {
+            localStorage.setItem("token", data.token);
             navigate('/dashboard');
         } else {
             alert('Login failed: ' + data.message);
@@ -70,7 +69,7 @@ function Login() {
 
     return (
         <div className="main">
-            <Snowfall color="white" snowflakeCount={30}/>
+            <Snowfall color="white" snowflakeCount={30} />
             <div className="page-container">
                 <section className="right-section">
                     <div className="decorative-elements">

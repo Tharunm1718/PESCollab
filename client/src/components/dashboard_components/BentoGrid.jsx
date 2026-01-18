@@ -28,15 +28,16 @@ const BentoGrid = () => {
   const [teammates, setTeammates] = React.useState([]);
   const [communityProjects, setCommunityProjects] = React.useState([]);
   const [contributionCounts, setContributionCounts] = React.useState({});
-  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await fetch('http://localhost:3000/dashboard', {
+        const response = await fetch('https://pes-collab-server.vercel.app/dashboard', {
           method: 'GET',
           headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
           },
           credentials: "include"
         });

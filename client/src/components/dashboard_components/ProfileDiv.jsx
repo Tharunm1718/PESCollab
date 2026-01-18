@@ -25,7 +25,11 @@ function ProfileDivision({ user, id, conCount }) {
     };
 
     useEffect(() => {
-        fetch("http://localhost:3000/auth/me", {
+        fetch("https://pes-collab-server.vercel.app/auth/me", {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
             credentials: "include"
         })
             .then(res => res.json())

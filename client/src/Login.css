@@ -22,27 +22,34 @@ body {
 }
 
 .main {
-    height: 100vh;
     width: 100vw;
+    height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
     background: linear-gradient(0deg,
             rgba(47, 29, 92, 1) 1%,
             rgba(20, 16, 45, 1) 70%,
             rgba(11, 12, 26, 1) 100%);
+    overflow: hidden;
 }
+
+
 
 .page-container {
     position: relative;
     width: 1440px;
     height: 1024px;
+    transform: scale(calc(100vw / 1440));
     transform-origin: center center;
 }
 
+
+
+
+
 .form-group {
-    width: 380px;
+    width: clamp(240px, 26.39vw, 380px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -50,21 +57,21 @@ body {
 
 .input-field {
     position: absolute;
-    width: 330px;
-    height: 40px;
+    width: clamp(200px, 22.92vw, 330px);
+    height: clamp(28px, 2.78vw, 40px);
     background: transparent;
     border: none;
     outline: none;
     font-family: "Inter", sans-serif;
     font-weight: 200;
     color: #ffffff;
-    font-size: 15px;
+    font-size: clamp(12px, 1.04vw, 15px);
     font-weight: 400;
     line-height: normal;
-    padding: 0 10px;
+    padding: 0 clamp(6px, 0.69vw, 10px);
     z-index: 2;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border-radius: 20px;
+    border-radius: clamp(14px, 1.39vw, 20px);
     will-change: transform, box-shadow;
 }
 
@@ -112,63 +119,63 @@ body {
 }
 
 #usn-input {
-    top: 462px;
-    left: 140px;
+    top: clamp(290px, 32.08vw, 462px);
+    left: clamp(88px, 9.72vw, 140px);
 }
 
 #password-input {
-    top: 580px;
-    left: 140px;
+    top: clamp(362px, 40.28vw, 580px);
+    left: clamp(88px, 9.72vw, 140px);
 }
 
 .group {
     position: absolute;
-    top: -108px;
-    left: 658px;
-    width: 1046px;
-    height: 1240px;
+    top: clamp(-68px, -7.5vw, -108px);
+    left: clamp(411px, 45.69vw, 658px);
+    width: clamp(654px, 72.64vw, 1046px);
+    height: clamp(775px, 86.11vw, 1240px);
     transform: rotate(180deg);
 }
 
 .overlap-group {
     position: absolute;
-    width: 1042px;
-    height: 1240px;
+    width: clamp(651px, 72.36vw, 1042px);
+    height: clamp(775px, 86.11vw, 1240px);
     top: 0;
     left: 0;
 }
 
 .group-wrapper {
     position: absolute;
-    height: 985px;
-    top: 255px;
+    height: clamp(616px, 68.4vw, 985px);
+    top: clamp(159px, 17.71vw, 255px);
     left: 0;
     display: flex;
     align-items: flex-start;
-    min-width: 1042px;
+    min-width: clamp(651px, 72.36vw, 1042px);
 }
 
 .div-wrapper {
-    min-width: 1042px;
+    min-width: clamp(651px, 72.36vw, 1042px);
     display: flex;
     align-items: flex-start;
 }
 
 .identifier-wrapper {
-    width: 1042px;
+    width: clamp(651px, 72.36vw, 1042px);
     display: flex;
 }
 
 .identifier {
-    width: 1042px;
-    height: 985px;
+    width: clamp(651px, 72.36vw, 1042px);
+    height: clamp(616px, 68.4vw, 985px);
     display: flex;
 }
 
 .rectangle {
     margin-top: 10vh;
-    width: 946px;
-    height: 889px;
+    width: clamp(591px, 65.69vw, 946px);
+    height: clamp(556px, 61.74vw, 889px);
     border-radius: 50%;
     margin-left: -2px;
     background-color: #1c14401a;
@@ -185,37 +192,37 @@ body {
 
 .div {
     position: absolute;
-    height: 437px;
+    height: clamp(273px, 30.35vw, 437px);
     top: 0;
-    left: 71px;
+    left: clamp(44px, 4.93vw, 71px);
     display: flex;
     align-items: flex-end;
-    min-width: 463px;
+    min-width: clamp(289px, 32.15vw, 463px);
 }
 
 .group-2 {
     margin-bottom: 0;
-    min-width: 463px;
+    min-width: clamp(289px, 32.15vw, 463px);
     display: flex;
     align-items: flex-start;
 }
 
 .group-3 {
-    width: 463px;
-    height: 437px;
+    width: clamp(289px, 32.15vw, 463px);
+    height: clamp(273px, 30.35vw, 437px);
     display: flex;
 }
 
 .rectangle-wrapper {
-    width: 462.6px;
-    height: 437.29px;
+    width: clamp(289px, 32.13vw, 462.6px);
+    height: clamp(273px, 30.37vw, 437.29px);
     display: flex;
 }
 
 .rectangle-2 {
     margin-top: 2px;
-    width: 466.6px;
-    height: 441.29px;
+    width: clamp(292px, 32.40vw, 466.6px);
+    height: clamp(276px, 30.64vw, 441.29px);
     border-radius: 792px;
     margin-left: -2px;
     background-color: #1c14401a;
@@ -232,36 +239,36 @@ body {
 
 .group-4 {
     position: absolute;
-    height: 240px;
-    top: 177px;
-    left: 631px;
+    height: clamp(150px, 16.67vw, 240px);
+    top: clamp(111px, 12.29vw, 177px);
+    left: clamp(394px, 43.82vw, 631px);
     display: flex;
     align-items: flex-start;
-    min-width: 237px;
+    min-width: clamp(148px, 16.46vw, 237px);
 }
 
 .group-5 {
     display: flex;
     align-items: flex-start;
-    min-width: 237px;
+    min-width: clamp(148px, 16.46vw, 237px);
 }
 
 .group-6 {
-    width: 237px;
+    width: clamp(148px, 16.46vw, 237px);
     display: flex;
 }
 
 .identifier-2 {
-    width: 237px;
-    height: 240px;
+    width: clamp(148px, 16.46vw, 237px);
+    height: clamp(150px, 16.67vw, 240px);
     display: flex;
 }
 
 .rectangle-3 {
     margin-top: 15vh;
-    width: 180px;
-    height: 180px;
-    margin-left: 5v;
+    width: clamp(113px, 12.5vw, 180px);
+    height: clamp(113px, 12.5vw, 180px);
+    margin-left: 5vw;
     background-color: #1c14401a;
     border-radius: 50%;
     border-right-width: 2px;
@@ -277,9 +284,9 @@ body {
 
 .TO-pescollab {
     position: absolute;
-    top: 649px;
-    left: 260px;
-    width: 367px;
+    top: clamp(406px, 45.07vw, 649px);
+    left: clamp(163px, 18.06vw, 260px);
+    width: clamp(229px, 25.49vw, 367px);
     transform: rotate(-180deg);
     background: linear-gradient(92deg,
             rgba(163, 71, 255, 1) 29%,
@@ -290,7 +297,7 @@ body {
     font-family: "Kusanagi", Helvetica, sans-serif;
     font-weight: 400;
     color: transparent;
-    font-size: 32px;
+    font-size: clamp(20px, 2.22vw, 32px);
     letter-spacing: 0;
     line-height: normal;
     white-space: nowrap;
@@ -298,8 +305,8 @@ body {
 
 .text-wrapper {
     position: absolute;
-    top: 688px;
-    left: 287px;
+    top: clamp(430px, 47.78vw, 688px);
+    left: clamp(179px, 19.93vw, 287px);
     transform: rotate(-180deg);
     background: linear-gradient(91deg,
             rgba(163, 71, 255, 1) 29%,
@@ -310,26 +317,26 @@ body {
     font-family: "Kusanagi", Helvetica, sans-serif;
     font-weight: 400;
     color: transparent;
-    font-size: 64px;
+    font-size: clamp(40px, 4.44vw, 64px);
     letter-spacing: 0;
     line-height: normal;
 }
 
 .screenshot {
     position: absolute;
-    top: 180px;
-    left: 169px;
-    width: 312px;
-    height: 224px;
+    top: clamp(113px, 12.5vw, 180px);
+    left: clamp(106px, 11.74vw, 169px);
+    width: clamp(195px, 21.67vw, 312px);
+    height: clamp(140px, 15.56vw, 224px);
     aspect-ratio: 1.39;
     object-fit: cover;
 }
 
 .group-7 {
     position: absolute;
-    height: 64px;
-    top: 451px;
-    left: 122px;
+    height: clamp(40px, 4.44vw, 64px);
+    top: clamp(282px, 31.32vw, 451px);
+    left: clamp(76px, 8.47vw, 122px);
     display: flex;
     align-items: flex-start;
 }
@@ -340,21 +347,21 @@ body {
 }
 
 .group-9 {
-    width: 405px;
+    width: clamp(253px, 28.13vw, 405px);
     display: flex;
 }
 
 .identifier-3 {
-    width: 405px;
-    height: 64px;
+    width: clamp(253px, 28.13vw, 405px);
+    height: clamp(40px, 4.44vw, 64px);
     display: flex;
 }
 
 .rectangle-4 {
     margin-top: -2px;
-    width: 409px;
-    height: 68px;
-    border-radius: 50px;
+    width: clamp(256px, 28.40vw, 409px);
+    height: clamp(43px, 4.72vw, 68px);
+    border-radius: clamp(31px, 3.47vw, 50px);
     margin-left: -2px;
     background-color: #1c14401a;
     border-right-width: 2px;
@@ -370,15 +377,15 @@ body {
 
 .group-10 {
     position: absolute;
-    top: 569px;
-    left: 122px;
-    width: 407px;
-    height: 64px;
+    top: clamp(356px, 39.51vw, 569px);
+    left: clamp(76px, 8.47vw, 122px);
+    width: clamp(254px, 28.26vw, 407px);
+    height: clamp(40px, 4.44vw, 64px);
 }
 
 .group-11 {
     position: absolute;
-    height: 64px;
+    height: clamp(40px, 4.44vw, 64px);
     top: 0;
     left: 0;
     display: flex;
@@ -392,12 +399,12 @@ body {
 
 .text-wrapper-3 {
     position: absolute;
-    top: 419px;
-    left: 147px;
+    top: clamp(262px, 29.1vw, 419px);
+    left: clamp(92px, 10.21vw, 147px);
     font-family: 'Kusanagi';
     font-weight: 380;
     color: #c7c4ff;
-    font-size: 14px;
+    font-size: clamp(10px, 0.97vw, 14px);
     letter-spacing: 0;
     line-height: normal;
     width: 35vh;
@@ -407,12 +414,12 @@ body {
 
 .text-wrapper-4 {
     position: absolute;
-    top: 540px;
-    left: 147px;
+    top: clamp(338px, 37.5vw, 540px);
+    left: clamp(92px, 10.21vw, 147px);
     font-family: "Kusanagi";
     font-weight: 380;
     color: #c7c4ff;
-    font-size: 14px;
+    font-size: clamp(10px, 0.97vw, 14px);
     letter-spacing: 0;
     line-height: normal;
     transition: color 0.3s ease;
@@ -420,23 +427,23 @@ body {
 }
 
 /* Label active state */
-.input-field:focus ~ .text-wrapper-3,
-.input-field:not(:placeholder-shown) ~ .text-wrapper-3 {
+.input-field:focus~.text-wrapper-3,
+.input-field:not(:placeholder-shown)~.text-wrapper-3 {
     color: #a347ff;
 }
 
-#password-input:focus ~ .text-wrapper-4,
-#password-input:not(:placeholder-shown) ~ .text-wrapper-4 {
+#password-input:focus~.text-wrapper-4,
+#password-input:not(:placeholder-shown)~.text-wrapper-4 {
     color: #a347ff;
 }
 
 .login-button {
-    position: absolute;
-    top: 613px;
-    left: 756px;
-    width: 187px;
-    height: 59px;
-    border-radius: 34.5px;
+    position: relative;
+    top: clamp(383px, 42.57vw, 613px);
+    left: clamp(473px, 52.5vw, 756px);
+    width: clamp(117px, 12.99vw, 187px);
+    height: clamp(37px, 4.1vw, 59px);
+    border-radius: clamp(22px, 2.40vw, 34.5px);
     background: linear-gradient(97deg, rgba(163, 71, 255, 1) 0%, rgba(77, 208, 225, 1) 100%);
     border: none;
     padding: 0;
@@ -444,14 +451,13 @@ body {
     font-family: "Inter-Bold", Helvetica, sans-serif;
     font-weight: 700;
     color: #ffffff;
-    font-size: 28px;
+    font-size: clamp(18px, 1.94vw, 28px);
     letter-spacing: 0;
-    line-height: 59px;
+    line-height: clamp(37px, 4.1vw, 59px);
     text-align: center;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 4px 15px rgba(77, 71, 255, 0.3);
     overflow: hidden;
-    position: relative;
     will-change: transform;
     user-select: none;
 }
@@ -470,7 +476,7 @@ body {
 .login-button:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(163, 71, 255, 0.4),
-                0 0 0 3px rgba(77, 208, 225, 0.1);
+        0 0 0 3px rgba(77, 208, 225, 0.1);
 }
 
 .login-button:hover:before {
@@ -501,12 +507,12 @@ body {
 .login-button.loading:after {
     content: '';
     position: absolute;
-    width: 20px;
-    height: 20px;
+    width: clamp(14px, 1.39vw, 20px);
+    height: clamp(14px, 1.39vw, 20px);
     top: 50%;
     left: 50%;
-    margin-left: -10px;
-    margin-top: -10px;
+    margin-left: clamp(-7px, -0.69vw, -10px);
+    margin-top: clamp(-7px, -0.69vw, -10px);
     border: 3px solid rgba(255, 255, 255, 0.3);
     border-radius: 50%;
     border-top-color: #ffffff;
@@ -527,69 +533,18 @@ body {
 
 .group-12 {
     position: absolute;
-    height: 240px;
-    top: 892px;
-    left: -76px;
+    height: clamp(150px, 16.67vw, 240px);
+    top: clamp(558px, 61.94vw, 892px);
+    left: clamp(-48px, -5.28vw, -76px);
     display: flex;
     align-items: flex-start;
-    min-width: 237px;
+    min-width: clamp(148px, 16.46vw, 237px);
     transform: rotate(180deg);
-}
-
-@media (max-aspect-ratio: 1440/1024) {
-    .page-container {
-        transform: scale(calc(100vw / 1440));
-    }
-}
-
-@media (min-aspect-ratio: 1440/1024) {
-    .page-container {
-        transform: scale(calc(100vh / 1024));
-    }
-}
-
-@media (max-width: 768px) {
-    .page-container {
-        transform: scale(calc(100vw / 1440));
-        transform-origin: top center;
-    }
-
-    .input-field,
-    .login-button {
-        touch-action: manipulation;
-    }
-
-    .input-field:focus {
-        font-size: 16px;
-    }
-
-    .login-button {
-        min-height: 44px;
-    }
-
-    * {
-        touch-action: manipulation;
-    }
-
-    .form-status {
-        font-size: 16px;
-        padding: 5px 0;
-    }
-
-    .error-message.visible {
-        font-size: 14px;
-        padding: 3px 0;
-    }
-}
-
-@media (max-width: 375px) {
-    .page-container {
-        transform: scale(calc(95vw / 1440));
-    }
 }
 
 /* Enhanced accessibility */
 @media (prefers-reduced-motion: reduce) {
+
     *,
     *::before,
     *::after {
@@ -602,7 +557,7 @@ body {
 .error-message {
     position: absolute;
     font-family: "Keylinx", Helvetica, sans-serif;
-    font-size: 12px;
+    font-size: clamp(10px, 0.83vw, 12px);
     color: #ff6b6b;
     margin-top: 2px;
     opacity: 0;
@@ -619,23 +574,23 @@ body {
 }
 
 #usn-error {
-    top: 520px;
-    left: 154px;
+    top: clamp(325px, 36.11vw, 520px);
+    left: clamp(96px, 10.69vw, 154px);
 }
 
 #password-error {
-    top: 638px;
-    left: 154px;
+    top: clamp(399px, 44.31vw, 638px);
+    left: clamp(96px, 10.69vw, 154px);
 }
 
 .form-status {
     position: absolute;
-    top: 740px;
-    left: 154px;
-    width: 345px;
+    top: clamp(463px, 51.39vw, 740px);
+    left: clamp(96px, 10.69vw, 154px);
+    width: clamp(216px, 23.96vw, 345px);
     text-align: center;
     font-family: "Inter", sans-serif;
-    font-size: 14px;
+    font-size: clamp(10px, 0.97vw, 14px);
     color: #4dd0e1;
     opacity: 0;
     transition: all 0.3s ease;
@@ -680,6 +635,7 @@ body {
 }
 
 @keyframes shake {
+
     10%,
     90% {
         transform: translate3d(-1px, 0, 0);
@@ -717,10 +673,12 @@ body {
 }
 
 @keyframes subtlePulse {
-    0%, 100% {
+
+    0%,
+    100% {
         box-shadow: 0 0 0 3px rgba(163, 71, 255, 0.3), 0 4px 15px rgba(77, 71, 255, 0.3);
     }
-    
+
     50% {
         box-shadow: 0 0 0 3px rgba(163, 71, 255, 0.5), 0 4px 20px rgba(77, 71, 255, 0.5);
     }
@@ -733,10 +691,12 @@ body {
 }
 
 @keyframes successPulse {
-    0%, 100% {
+
+    0%,
+    100% {
         box-shadow: 0 0 8px rgba(77, 208, 225, 0.5);
     }
-    
+
     50% {
         box-shadow: 0 0 15px rgba(77, 208, 225, 0.8), 0 0 30px rgba(77, 208, 225, 0.4);
     }
@@ -747,7 +707,7 @@ body {
         opacity: 0;
         transform: translateY(-10px);
     }
-    
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -759,7 +719,7 @@ body {
         opacity: 0;
         transform: translateY(-10px) scale(0.95);
     }
-    
+
     to {
         opacity: 1;
         transform: translateY(0) scale(1);

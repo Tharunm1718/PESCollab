@@ -5,7 +5,7 @@ const Card = ({ title, description, language, views, contributors, handshakeIcon
   const handleDownloadClick = (e) => {
     e.stopPropagation();
     window.location.href =
-      `http://localhost:3000/project/${id}/download`;
+      `https://pes-collab-server.vercel.app/project/${id}/download`;
   };
 
   return (

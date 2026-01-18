@@ -21,72 +21,78 @@ function CreateProjectSection({ mode, projectId }) {
     );
   };
 
-const handleCreateProject = async () => {
-  if (mode !== "Contribute" && (!projectName || !description)) {
-    alert("Please fill in the project name and description.");
-    return;
-  }
-  else if (mode === "Contribute" && !projectName) {
-    alert("Please fill in the project name.");
-    return;
-  }
-
-  try {
-    const formData = new FormData();
-
-    if (mode === "Contribute") {
-      formData.append("title", projectName); 
-    } else {
-      formData.append("title", projectName);
-      formData.append("description", description);
+  const handleCreateProject = async () => {
+    if (mode !== "Contribute" && (!projectName || !description)) {
+      alert("Please fill in the project name and description.");
+      return;
+    }
+    else if (mode === "Contribute" && !projectName) {
+      alert("Please fill in the project name.");
+      return;
     }
 
-    selectedFiles.forEach((file) => {
-      formData.append("files", file);
-    });
+    try {
+      const formData = new FormData();
 
-    let response;
+      if (mode === "Contribute") {
+        formData.append("title", projectName);
+      } else {
+        formData.append("title", projectName);
+        formData.append("description", description);
+      }
 
-    if (mode !== "Contribute") {
-      response = await fetch("http://localhost:3000/createproject", {
-        method: "POST",
-        body: formData,
-        credentials: "include",
+      selectedFiles.forEach((file) => {
+        formData.append("files", file);
       });
-    } else {
-      response = await fetch(
-        `http://localhost:3000/contribute/${projectId}`,
-        {
+
+      let response;
+
+      if (mode !== "Contribute") {
+        response = await fetch("https://pes-collab-server.vercel.app/createproject", {
           method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`
+          },
           body: formData,
           credentials: "include",
-        }
-      );
+        });
+      } else {
+        response = await fetch(
+          `https://pes-collab-server.vercel.app/contribute/${projectId}`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`
+            },
+            body: formData,
+            credentials: "include",
+          }
+        );
+      }
+
+      const result = await response.json();
+
+      if (result.success) {
+        setProjectName("");
+        setDescription("");
+        setSelectedFiles([]);
+
+        alert(
+          mode === "Contribute"
+            ? "Contribution submitted successfully!"
+            : "Project created successfully!"
+        );
+
+        navigate("/yourprojects");
+      } else {
+        alert("Error: " + result.message);
+      }
+
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Server error");
     }
-
-    const result = await response.json();
-
-    if (result.success) {
-      setProjectName("");
-      setDescription("");
-      setSelectedFiles([]);
-
-      alert(
-        mode === "Contribute"
-          ? "Contribution submitted successfully!"
-          : "Project created successfully!"
-      );
-
-      navigate("/yourprojects");
-    } else {
-      alert("Error: " + result.message);
-    }
-
-  } catch (error) {
-    console.error("Error:", error);
-    alert("Server error");
-  }
-};
+  };
 
 
   return (

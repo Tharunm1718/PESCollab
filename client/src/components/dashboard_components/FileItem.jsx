@@ -15,7 +15,7 @@ export default function FileItem({
   const handleDownload = () => {
     if (!downloadId) return;
     window.location.href =
-      `http://localhost:3000/contributions/${downloadId}/download`;
+      `https://pes-collab-server.vercel.app/contributions/${downloadId}/download`;
   };
 
   return (

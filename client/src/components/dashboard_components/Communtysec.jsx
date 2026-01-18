@@ -23,15 +23,18 @@ function CommunitySection({ mode }) {
 
         if (mode === "team" && title) {
           response = await fetch(
-            `http://localhost:3000/${title}/team`,
+            `https://pes-collab-server.vercel.app/${title}/team`,
             {
               method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+              },
               credentials: "include",
             }
           );
 
           result = await response.json();
-          console.log("Team data:", result);
 
           if (result.success) {
             setMembers(result.members);
@@ -39,15 +42,17 @@ function CommunitySection({ mode }) {
 
         } else {
           response = await fetch(
-            "http://localhost:3000/community",
+            "https://pes-collab-server.vercel.app/community",
             {
               method: "GET",
+              headers: {
+                Authorization: `Bearer ${token}`
+              },
               credentials: "include",
             }
           );
 
           result = await response.json();
-          console.log("Projects data:", result);
 
           if (result.success) {
             setMembers(result.members);

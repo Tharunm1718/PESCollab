@@ -3,27 +3,30 @@ import Card from './ProjectCard';
 import { useNavigate } from 'react-router-dom';
 import Loader from '../Loader';
 
-function CardGrid({mode}) {
+function CardGrid({ mode }) {
   const navigate = useNavigate();
   const [cardData, setCardData] = useState([]);
   const [loading, setLoading] = useState(true);
-  
-  const onClick=(id, title) => {
-    mode==="teammates" ? navigate(`/${title}/team`) :
-    navigate(`/yourprojects/${id}`);
+
+  const onClick = (id, title) => {
+    mode === "teammates" ? navigate(`/${title}/team`) :
+      navigate(`/yourprojects/${id}`);
   };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await fetch("http://localhost:3000/yourprojects", {
+        const response = await fetch("https://pes-collab-server.vercel.app/yourprojects", {
           method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+          },
           credentials: "include",
         });
 
         const result = await response.json();
-        console.log("Projects data:", result);
         setCardData(result.projects || []);
       } catch (error) {
         console.error('Error fetching projects:', error);
@@ -46,11 +49,11 @@ function CardGrid({mode}) {
           title={card.title}
           description={card.description}
           language={card.language}
-          views={card.views=== undefined ? 0 : card.views}
+          views={card.views === undefined ? 0 : card.views}
           contributors={card.contributors}
           handshakeIcon={card.handshakeIcon}
           downloadIcon={card.downloadIcon}
-          onClick={() => onClick(card.id , card.title)}
+          onClick={() => onClick(card.id, card.title)}
           mode={mode}
           id={card.id}
         />

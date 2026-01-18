@@ -9,6 +9,7 @@ const mongoose = require("mongoose");
 const cors = require('cors');
 const archiver = require("archiver");
 const axios = require("axios");
+const jwt = require("jsonwebtoken");
 
 
 let port = 3000
@@ -32,45 +33,20 @@ const supabaseAdmin = createClient(
   process.env.SERVICE_ROLE_KEY
 );
 
-async function main() {
+function requireAuth(req, res, next) {
+  const auth = req.headers.authorization;
+  if (!auth) return res.status(401).json({ success: false });
+
+  const token = auth.split(" ")[1];
+
   try {
-    await mongoose.connect(process.env.MONGO_URI);
-  } catch (err) {
-    console.error("❌ MongoDB connection error:", err);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded;
+    next();
+  } catch {
+    return res.status(401).json({ success: false });
   }
 }
-main();
-
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET || "agriconnectSecretKey",
-    resave: false,
-    saveUninitialized: false,
-    store: MongoStore.create({
-      mongoUrl: process.env.MONGO_URI,
-      ttl: 24 * 60 * 60 * 1000,
-    }),
-    cookie: {
-      secure: false,
-      httpOnly: true,
-      sameSite: "lax",
-      maxAge: 24 * 60 * 60 * 1000
-    },
-  })
-);
-
-
-const requireAuth = (req, res, next) => {
-  if (!req.session || !req.session.usn) {
-    return res.status(401).json({
-      success: false,
-      message: "Unauthorized. Please log in."
-    });
-  }
-  next();
-};
-
-
 
 app.listen(port, () => {
 });
@@ -107,41 +83,23 @@ app.post("/", async (req, res) => {
       message: "Invalid credentials."
     });
   }
+  const token = jwt.sign(
+    { id: data.id, usn: data.usn },
+    process.env.JWT_SECRET,
+    { expiresIn: "7d" }
+  );
 
-  req.session.usn = usn;
-
-  req.session.save(err => {
-    if (err) {
-      console.error("Session save error:", err);
-      return res.status(500).json({
-        success: false,
-        message: "Error saving session. Please try again."
-      });
+res.json({
+    success: true,
+    message: "Login successful",
+    token,
+    user: {
+      id: data.id,
+      usn: data.usn,
+      name: data.name
     }
-    res.json({
-      success: true,
-      message: "Login successful",
-      usn: req.session.usn
-    });
   });
-});
 
-
-app.post("/logout", requireAuth, (req, res) => {
-  const usn = req.session.usn;
-  req.session.destroy(err => {
-    if (err) {
-      console.error("Session destroy error:", err);
-      return res.status(500).json({
-        success: false,
-        message: "Error logging out."
-      });
-    }
-    res.json({
-      success: true,
-      message: "Logged out successfully"
-    });
-  });
 });
 
 app.get("/dashboard", requireAuth, async (req, res) => {
@@ -149,7 +107,7 @@ app.get("/dashboard", requireAuth, async (req, res) => {
     const { data, error } = await supabase
       .from("students")
       .select("id, name")
-      .eq("usn", req.session.usn)
+      .eq("usn", req.user.usn)
       .single();
 
     if (error) {
@@ -163,7 +121,7 @@ app.get("/dashboard", requireAuth, async (req, res) => {
     const { data: projData, projError } = await supabase
       .from("projects")
       .select("*")
-      .eq("owner_id", req.session.usn);
+      .eq("owner_id", req.user.usn);
 
     if (projError) {
       console.error("Supabase query error:", projError);
@@ -200,7 +158,7 @@ app.get("/dashboard", requireAuth, async (req, res) => {
     const { data: project, error: projecterr } = await supabase
       .from("projects")
       .select("*")
-      .neq("owner_id", req.session.usn);
+      .neq("owner_id", req.user.usn);
     if (projecterr) {
       console.error("Supabase query error:", projecterr);
       return res.status(500).json({
@@ -223,7 +181,7 @@ app.get("/yourprojects", requireAuth, async (req, res) => {
     const { data, error } = await supabase
       .from("projects")
       .select("*")
-      .eq("owner_id", req.session.usn);
+      .eq("owner_id", req.user.usn);
 
     if (error) {
       console.error("Supabase query error:", error);
@@ -252,7 +210,7 @@ app.post("/createproject", requireAuth, upload.array("files"), async (req, res) 
     const { data: projectData, error: projectError } = await supabase
       .from('projects')
       .insert({
-        owner_id: req.session.usn,
+        owner_id: req.user.usn,
         title: title,
         description: description
       })
@@ -268,7 +226,7 @@ app.post("/createproject", requireAuth, upload.array("files"), async (req, res) 
 
     if (files && files.length > 0) {
       for (const file of files) {
-        const filePath = `${req.session.usn}/${newProjectId}/${file.originalname}`;
+        const filePath = `${req.user.usn}/${newProjectId}/${file.originalname}`;
 
         const { error: uploadError } = await supabase
           .storage
@@ -449,7 +407,7 @@ app.get("/community", requireAuth, async (req, res) => {
           name
         )
       `)
-      .neq("owner_id", req.session.usn);
+      .neq("owner_id", req.user.usn);
 
     if (error) {
       console.error(error);
@@ -472,7 +430,7 @@ app.get("/community", requireAuth, async (req, res) => {
     const members = await supabase
       .from("students")
       .select("usn, name, email")
-      .neq("usn", req.session.usn);
+      .neq("usn", req.user.usn);
 
     if (members.error) {
       console.error(members.error);
@@ -548,7 +506,7 @@ app.post("/contribute/:id", requireAuth, upload.array("files"), async (req, res)
   const { data: contributorData, error: contributorError } = await supabase
     .from("students")
     .select("id")
-    .eq("usn", req.session.usn)
+    .eq("usn", req.user.usn)
     .single();
 
   if (contributorError) {
@@ -614,7 +572,7 @@ app.get("/settings", requireAuth, async (req, res) => {
     const { data, error } = await supabase
       .from("students")
       .select("name, email, usn, about_me, password")
-      .eq("usn", req.session.usn)
+      .eq("usn", req.user.usn)
       .single();
 
     if (error) {
@@ -642,7 +600,7 @@ app.post("/settings/update", requireAuth, async (req, res) => {
     const { data, error } = await supabase
       .from("students")
       .update({ name, email, about_me, password })
-      .eq("usn", req.session.usn);
+      .eq("usn", req.user.usn);
 
     if (error) {
       console.error("Settings update error:", error);
@@ -750,21 +708,21 @@ app.get("/:title/team", requireAuth, async (req, res) => {
   }
 });
 
-app.get("/auth/me", async (req, res) => {
-  if (!req.session.usn) {
+app.get("/auth/me", requireAuth, async (req, res) => {
+  if (!req.user.usn) {
     return res.status(401).json({ success: false });
   }
   const { data, error } = await supabase
     .from("students")
     .select("name")
-    .eq("usn", req.session.usn);
+    .eq("usn", req.user.usn);
   if (error || data.length === 0) {
     return res.status(500).json({ success: false });
   }
 
   res.json({
     success: true,
-    usn: req.session.usn,
+    usn: req.user.usn,
     name: data[0].name
   });
 });
