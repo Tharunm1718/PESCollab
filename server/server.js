@@ -15,12 +15,19 @@ app.use(cors({
   origin: 'https://pes-collab.vercel.app',
   credentials: true
 }));
-app.use(express.json());
+
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 app.use(express.json({ limit: '50mb' }));
 
 const storage = multer.memoryStorage();
-const upload = multer({ storage });
+const upload = multer({
+  storage,
+  limits: {
+    fileSize: 10 * 1024 * 1024,  
+    files: 200                   
+  }
+});
+
 
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
@@ -575,7 +582,6 @@ app.post("/contribute/:id", requireAuth, upload.array("files"), async (req, res)
         if (fileDbError) console.error(fileDbError);
       }
     }
-
     res.json({ success: true, message: "Contribution submitted and files uploaded!" });
   } catch (error) {
     console.error(error);
