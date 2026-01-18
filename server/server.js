@@ -29,14 +29,6 @@ const upload = multer({
   }
 });
 
-const upload = multer({
-  storage,
-  limits: {
-    fileSize: 10 * 1024 * 1024,  
-    files: 200                   
-  }
-});
-
 
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
