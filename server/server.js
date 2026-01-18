@@ -12,9 +12,8 @@ const axios = require("axios");
 
 
 let port = 3000
-const frontendURL = "http://localhost:5173"
 app.use(cors({
-  origin: frontendURL,
+  origin: "*",
   credentials: true
 }));
 app.use(express.json());
