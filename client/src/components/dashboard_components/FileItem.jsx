@@ -11,11 +11,41 @@ export default function FileItem({
   onProfileClick
 }) {
   if (!label) return null;
-
-  const handleDownload = () => {
+  const handleDownload = async () => {
     if (!downloadId) return;
-    window.location.href =
-      `https://pes-collab-server.vercel.app/contributions/${downloadId}/download`;
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("You must be logged in to download attachments.");
+      return;
+    }
+    try {
+      const response = await fetch(
+        ` http://localhost:3000/contributions/${downloadId}/download`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          credentials: "include",
+        }
+      );
+      if (!response.ok) {
+        alert("Failed to download attachments.");
+        return;
+      }
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `contribution-${downloadId}.zip`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("Download error:", err);
+      alert("An error occurred while downloading attachments.");
+    }
   };
 
   return (

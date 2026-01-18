@@ -16,6 +16,7 @@ function CommunitySection({ mode }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const token = localStorage.getItem("token");
         setLoading(true);
 
         let response;
@@ -23,7 +24,7 @@ function CommunitySection({ mode }) {
 
         if (mode === "team" && title) {
           response = await fetch(
-            `https://pes-collab-server.vercel.app/${title}/team`,
+            ` http://localhost:3000/${title}/team`,
             {
               method: "GET",
               headers: {
@@ -42,7 +43,7 @@ function CommunitySection({ mode }) {
 
         } else {
           response = await fetch(
-            "https://pes-collab-server.vercel.app/community",
+            " http://localhost:3000/community",
             {
               method: "GET",
               headers: {

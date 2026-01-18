@@ -13,11 +13,13 @@ function CardGrid({ mode }) {
       navigate(`/yourprojects/${id}`);
   };
 
+
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const token = localStorage.getItem('token');
         setLoading(true);
-        const response = await fetch("https://pes-collab-server.vercel.app/yourprojects", {
+        const response = await fetch(" http://localhost:3000/yourprojects", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

@@ -11,13 +11,16 @@ function SingleProjectSection({ title }) {
   const [files, setFiles] = useState([]);
   const [Contributions, setContributions] = useState([]);
   const [loading, setLoading] = useState(true);
+  
+  
 
   useEffect(() => {
+    const token = localStorage.getItem('token');
     const fetchProjectDetails = async () => {
       try {
         setLoading(true);
         const response = await fetch(
-          `https://pes-collab-server.vercel.app/projectfiles/${id}`, {
+          ` http://localhost:3000/projectfiles/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`
           },

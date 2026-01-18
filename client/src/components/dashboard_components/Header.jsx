@@ -5,9 +5,12 @@ import { useEffect, useState } from 'react';
 
 const Header = (props) => {
   const [userName, setUserName] = useState(null);
+  
+  
   useEffect(() => {
+    const token = localStorage.getItem('token');
     async function go() {
-      const res = await fetch("https://pes-collab-server.vercel.app/auth/me", {
+      const res = await fetch(" http://localhost:3000/auth/me", {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`

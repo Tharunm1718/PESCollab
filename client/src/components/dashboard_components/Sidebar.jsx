@@ -13,14 +13,21 @@ function Sidebar() {
   const location = useLocation();
 
   const handlelogout = async () => {
-    await fetch("https://pes-collab-server.vercel.app/logout", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
-      credentials: "include"
-    });
-    navigate('/');
+    const token = localStorage.getItem('token');
+    try {
+      if (token) {
+        await fetch(" http://localhost:3000/logout", {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+      }
+    } finally {
+      localStorage.removeItem('token');
+      navigate('/');
+    }
   };
 
   return (

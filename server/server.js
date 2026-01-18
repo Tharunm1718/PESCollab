@@ -1,18 +1,16 @@
 let express = require("express");
 let app = express();
-const session = require("express-session");
 require("dotenv").config();
-const { createClient } = require('@supabase/supabase-js')
+const { createClient } = require('@supabase/supabase-js');
 const multer = require('multer');
-const MongoStore = require("connect-mongo");
-const mongoose = require("mongoose");
 const cors = require('cors');
 const archiver = require("archiver");
 const axios = require("axios");
 const jwt = require("jsonwebtoken");
 
+const JWT_SECRET = process.env.JWT_SECRET;
 
-let port = 3000
+let port = 3000;
 app.use(cors({
   origin: 'http://localhost:5173',
   credentials: true
@@ -24,9 +22,9 @@ app.use(express.json({ limit: '50mb' }));
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
-const supabaseUrl = process.env.SUPABASE_URL
-const supabaseKey = process.env.SUPABASE_KEY
-const supabase = createClient(supabaseUrl, supabaseKey)
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 const supabaseAdmin = createClient(
   supabaseUrl,
@@ -34,26 +32,43 @@ const supabaseAdmin = createClient(
 );
 
 function requireAuth(req, res, next) {
-  const auth = req.headers.authorization;
-  if (!auth) return res.status(401).json({ success: false });
+  const authHeader = req.headers.authorization || "";
 
-  const token = auth.split(" ")[1];
+  if (!authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({
+      success: false,
+      message: "Unauthorized"
+    });
+  }
+
+  const token = authHeader.split(" ")[1];
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, JWT_SECRET);
+
+    if (!decoded || !decoded.usn) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized"
+      });
+    }
+
     req.user = decoded;
     next();
   } catch {
-    return res.status(401).json({ success: false });
+    return res.status(401).json({
+      success: false,
+      message: "Unauthorized"
+    });
   }
 }
 
 app.listen(port, () => {
+  console.log(`http://localhost:${port} `);
 });
 
 app.post("/", async (req, res) => {
   const { usn, password } = req.body;
-
 
   if (!usn || !password) {
     return res.status(400).json({
@@ -64,42 +79,43 @@ app.post("/", async (req, res) => {
 
   const { data, error } = await supabase
     .from("students")
-    .select("password")
+    .select("id, usn, name, password")
     .eq("usn", usn)
-    .single();
+    .maybeSingle();
 
-  if (data.password === null || error) {
+  if (error || !data.password) {
     if (password !== "pes@student") {
       return res.status(401).json({
         success: false,
         message: "Invalid credentials."
       });
     }
-  }
-
-  else if (password !== data.password) {
+  } else if (data.password !== password) {
     return res.status(401).json({
       success: false,
       message: "Invalid credentials."
     });
   }
+
   const token = jwt.sign(
     { id: data.id, usn: data.usn },
-    process.env.JWT_SECRET,
+    JWT_SECRET,
     { expiresIn: "7d" }
   );
-
-res.json({
+ console.log(token)
+  res.json({
     success: true,
     message: "Login successful",
     token,
-    user: {
-      id: data.id,
-      usn: data.usn,
-      name: data.name
-    }
+    user: data
   });
+});
 
+app.post("/logout", requireAuth, (req, res) => {
+  return res.json({
+    success: true,
+    message: "Logged out successfully"
+  });
 });
 
 app.get("/dashboard", requireAuth, async (req, res) => {
@@ -108,13 +124,13 @@ app.get("/dashboard", requireAuth, async (req, res) => {
       .from("students")
       .select("id, name")
       .eq("usn", req.user.usn)
-      .single();
+      .maybeSingle();
 
-    if (error) {
+    if (error || !data) {
       console.error("Supabase query error:", error);
-      return res.status(500).json({
+      return res.status(401).json({
         success: false,
-        message: "Error fetching user data."
+        message: "User not found"
       });
     }
 
@@ -134,7 +150,7 @@ app.get("/dashboard", requireAuth, async (req, res) => {
     const { data: Teammates, contribError } = await supabase
       .from("project_team_members")
       .select("student_id")
-      .eq("owner_id", data.id);
+      .eq("owner_id", req.user.id);
     if (contribError) {
       console.error("Supabase query error:", contribError);
       return res.status(500).json({
@@ -294,10 +310,10 @@ app.get("/projectfiles/:id", requireAuth, async (req, res) => {
       .from("projects")
       .select("id, title, description")
       .eq("id", projectId)
-      .single();
+      .maybeSingle();
 
-    if (projectError) {
-      return res.status(500).json({ success: false, message: "Project fetch failed" });
+    if (projectError || !projectData) {
+      return res.status(404).json({ success: false, message: "Project fetch failed" });
     }
 
     const { data: filesData, error: filesError } = await supabase
@@ -453,11 +469,11 @@ app.get("/profileview/:id", requireAuth, async (req, res) => {
         id,
         name,
         email
-      `).eq("usn", id).single();
+      `).eq("usn", id).maybeSingle();
 
-    if (usererr) {
+    if (usererr || !userdata) {
       console.error(usererr);
-      return res.status(500).json({ success: false, message: "Failed to fetch projects" });
+      return res.status(404).json({ success: false, message: "Failed to fetch projects" });
     }
 
     const { count, error: countErr } = await supabase
@@ -507,9 +523,9 @@ app.post("/contribute/:id", requireAuth, upload.array("files"), async (req, res)
     .from("students")
     .select("id")
     .eq("usn", req.user.usn)
-    .single();
+    .maybeSingle();
 
-  if (contributorError) {
+  if (contributorError || !contributorData) {
     console.error(contributorError);
     return res.status(500).json({ success: false, message: "Failed to fetch contributor data" });
   }
@@ -573,11 +589,11 @@ app.get("/settings", requireAuth, async (req, res) => {
       .from("students")
       .select("name, email, usn, about_me, password")
       .eq("usn", req.user.usn)
-      .single();
+      .maybeSingle();
 
-    if (error) {
+    if (error || !data) {
       console.error("Settings fetch error:", error);
-      return res.status(500).json({
+      return res.status(404).json({
         success: false,
         message: "Failed to fetch user settings"
       });
@@ -623,7 +639,7 @@ app.post("/settings/update", requireAuth, async (req, res) => {
   }
 });
 
-app.post("/projects/:projectId/add-member", async (req, res) => {
+app.post("/projects/:projectId/add-member", requireAuth, async (req, res) => {
   const projectId = req.params.projectId;
   const { studentId } = req.body;
 
@@ -640,7 +656,8 @@ app.post("/projects/:projectId/add-member", async (req, res) => {
       .insert([
         {
           project_id: projectId,
-          student_id: studentId
+          student_id: studentId,
+          owner_id: req.user.id
         }
       ]);
 
@@ -675,38 +692,47 @@ app.post("/projects/:projectId/add-member", async (req, res) => {
 
 app.get("/:title/team", requireAuth, async (req, res) => {
   const projectTitle = req.params.title;
+
   try {
     const { data: projectData, error: projectError } = await supabase
       .from("projects")
       .select("id")
       .eq("title", projectTitle)
-      .single();
-    if (projectError) {
-      console.error(projectError);
-      return res.status(500).json({ success: false, message: "Failed to fetch project" });
+      .maybeSingle();
+
+    if (projectError || !projectData) {
+      return res.status(404).json({ success: false, message: "Project not found" });
     }
+
     const projectId = projectData.id;
 
     const { data: teamMembers, error: membersError } = await supabase
       .from("project_team_members")
       .select(`
-        students (
+        students!project_team_members_student_id_fkey (
           usn,
           name,
           email
         )
       `)
       .eq("project_id", projectId);
+
     if (membersError) {
       console.error(membersError);
       return res.status(500).json({ success: false, message: "Failed to fetch team members" });
     }
-    res.json({ success: true, members: teamMembers.map(member => member.students) });
+
+    res.json({
+      success: true,
+      members: teamMembers.map(m => m.students)
+    });
+
   } catch (err) {
     console.error(err);
-    res.status(500).json({ success: false, message: "Server error" });
+    res.status(500).json({ success: false });
   }
 });
+
 
 app.get("/auth/me", requireAuth, async (req, res) => {
   if (!req.user.usn) {

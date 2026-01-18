@@ -6,7 +6,9 @@ const ProjectItem = ({ project_id, repoName, views, contributors, mode, name }) 
   function handleOpenProject() {
     { mode === "PROJECTS" ? navigate(`/projects/${project_id}`) : mode === "USER_PROJECTS" ? navigate(`/projects/${project_id}`) : navigate(`/profileview/${project_id}`) }
 
-    const handleviews = fetch(`https://pes-collab-server.vercel.app/incrementview/${project_id}`, {
+    const token = localStorage.getItem('token');
+    
+    const handleviews = fetch(` http://localhost:3000/incrementview/${project_id}`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`

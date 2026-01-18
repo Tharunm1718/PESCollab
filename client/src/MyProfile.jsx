@@ -3,10 +3,15 @@ import { useNavigate } from "react-router-dom";
 
 function MyProfileRedirect() {
   const navigate = useNavigate();
+  
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
     async function go() {
-      const res = await fetch("http://localhost:3000/auth/me", {
+      const res = await fetch(" http://localhost:3000//auth/me", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
         credentials: "include"
       });
       const data = await res.json();

@@ -24,8 +24,10 @@ function ProfileDivision({ user, id, conCount }) {
         }, 3000);
     };
 
+
     useEffect(() => {
-        fetch("https://pes-collab-server.vercel.app/auth/me", {
+        const token = localStorage.getItem('token');
+        fetch(" http://localhost:3000/auth/me", {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`

@@ -13,12 +13,14 @@ function Profileviewsection() {
   const [contributionCounts, setContributionCounts] = useState({});
   const [loading, setLoading] = useState(true);
 
+
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const token = localStorage.getItem('token');
         setLoading(true);
         const response = await fetch(
-          `https://pes-collab-server.vercel.app/profileview/${id}`,
+          ` http://localhost:3000/profileview/${id}`,
           {
             method: "GET",
             headers: {

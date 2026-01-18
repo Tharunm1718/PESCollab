@@ -15,18 +15,29 @@ function SettingSection({ mode }) {
     const [loading, setLoading] = useState(true);
 
     const handlelogout = async () => {
-        await fetch("https://pes-collab-server.vercel.app/logout", {
-            method: "POST",
-            credentials: "include"
-        });
-        navigate('/');
+        const token = localStorage.getItem('token');
+        try {
+            if (token) {
+                await fetch(" http://localhost:3000/ logout", {
+                    method: "POST",
+                    credentials: "include",
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+            }
+        } finally {
+            localStorage.removeItem('token');
+            navigate('/');
+        }
     };
 
     useEffect(() => {
         const response = async () => {
             try {
                 setLoading(true);
-                const res = await fetch('https://pes-collab-server.vercel.app/settings', {
+                const token = localStorage.getItem('token');
+                const res = await fetch(' http://localhost:3000/settings', {
                     method: 'GET',
                     credentials: 'include',
                     headers: {
@@ -49,8 +60,11 @@ function SettingSection({ mode }) {
         response();
     }, []);
 
+
+
     const handleSave = async () => {
-        await fetch("https://pes-collab-server.vercel.app/settings/update", {
+        const token = localStorage.getItem('token');
+        await fetch(" http://localhost:3000/settings/update", {
             method: "POST",
             credentials: "include",
             headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },

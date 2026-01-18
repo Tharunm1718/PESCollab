@@ -2,10 +2,41 @@ import { Download } from "lucide-react"
 
 const Card = ({ title, description, language, views, contributors, handshakeIcon, downloadIcon, onClick, mode, id }) => {
 
-  const handleDownloadClick = (e) => {
+  const handleDownloadClick = async (e) => {
     e.stopPropagation();
-    window.location.href =
-      `https://pes-collab-server.vercel.app/project/${id}/download`;
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("You must be logged in to download this project.");
+      return;
+    }
+    try {
+      const response = await fetch(
+        ` http://localhost:3000/project/${id}/download`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          credentials: "include",
+        }
+      );
+      if (!response.ok) {
+        alert("Failed to download project files.");
+        return;
+      }
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `project-${id}.zip`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("Download error:", err);
+      alert("An error occurred while downloading project files.");
+    }
   };
 
   return (

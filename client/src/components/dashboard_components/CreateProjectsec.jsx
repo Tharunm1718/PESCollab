@@ -11,6 +11,7 @@ function CreateProjectSection({ mode, projectId }) {
   const [projectName, setProjectName] = useState("");
   const [description, setDescription] = useState("");
 
+
   const handleFilesAdded = (newFiles) => {
     setSelectedFiles((prevFiles) => [...prevFiles, ...Array.from(newFiles)]);
   };
@@ -33,6 +34,7 @@ function CreateProjectSection({ mode, projectId }) {
 
     try {
       const formData = new FormData();
+      const token = localStorage.getItem("token");
 
       if (mode === "Contribute") {
         formData.append("title", projectName);
@@ -48,7 +50,7 @@ function CreateProjectSection({ mode, projectId }) {
       let response;
 
       if (mode !== "Contribute") {
-        response = await fetch("https://pes-collab-server.vercel.app/createproject", {
+        response = await fetch(" http://localhost:3000/createproject", {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`
@@ -58,7 +60,7 @@ function CreateProjectSection({ mode, projectId }) {
         });
       } else {
         response = await fetch(
-          `https://pes-collab-server.vercel.app/contribute/${projectId}`,
+          ` http://localhost:3000/contribute/${projectId}`,
           {
             method: "POST",
             headers: {
