@@ -12,7 +12,7 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 let port = 3000;
 app.use(cors({
-  origin: 'https://pes-collab.vercel.app/',
+  origin: 'https://pes-collab.vercel.app',
   credentials: true
 }));
 app.use(express.json());
