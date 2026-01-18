@@ -20,7 +20,7 @@ function Profileviewsection() {
         const token = localStorage.getItem('token');
         setLoading(true);
         const response = await fetch(
-          ` http://localhost:3000/profileview/${id}`,
+          ` https://pes-collab-server.vercel.app/profileview/${id}`,
           {
             method: "GET",
             headers: {

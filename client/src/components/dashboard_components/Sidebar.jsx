@@ -16,7 +16,7 @@ function Sidebar() {
     const token = localStorage.getItem('token');
     try {
       if (token) {
-        await fetch(" http://localhost:3000/logout", {
+        await fetch(" https://pes-collab-server.vercel.app/logout", {
           method: "POST",
           credentials: "include",
           headers: {

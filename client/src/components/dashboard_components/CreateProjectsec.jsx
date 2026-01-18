@@ -50,7 +50,7 @@ function CreateProjectSection({ mode, projectId }) {
       let response;
 
       if (mode !== "Contribute") {
-        response = await fetch(" http://localhost:3000/createproject", {
+        response = await fetch(" https://pes-collab-server.vercel.app/createproject", {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`
@@ -60,7 +60,7 @@ function CreateProjectSection({ mode, projectId }) {
         });
       } else {
         response = await fetch(
-          ` http://localhost:3000/contribute/${projectId}`,
+          ` https://pes-collab-server.vercel.app/contribute/${projectId}`,
           {
             method: "POST",
             headers: {

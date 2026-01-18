@@ -24,7 +24,7 @@ function CommunitySection({ mode }) {
 
         if (mode === "team" && title) {
           response = await fetch(
-            ` http://localhost:3000/${title}/team`,
+            ` https://pes-collab-server.vercel.app/${title}/team`,
             {
               method: "GET",
               headers: {
@@ -43,7 +43,7 @@ function CommunitySection({ mode }) {
 
         } else {
           response = await fetch(
-            " http://localhost:3000/community",
+            " https://pes-collab-server.vercel.app/community",
             {
               method: "GET",
               headers: {

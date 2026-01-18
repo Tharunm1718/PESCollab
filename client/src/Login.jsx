@@ -52,7 +52,7 @@ function Login() {
     
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = await fetch(' http://localhost:3000/ ', {
+        const response = await fetch(' https://pes-collab-server.vercel.app/', {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ usn: formdata.usn, password: formdata.password }),

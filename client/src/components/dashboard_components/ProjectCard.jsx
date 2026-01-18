@@ -11,7 +11,7 @@ const Card = ({ title, description, language, views, contributors, handshakeIcon
     }
     try {
       const response = await fetch(
-        ` http://localhost:3000/project/${id}/download`,
+        ` https://pes-collab-server.vercel.app/project/${id}/download`,
         {
           method: "GET",
           headers: {

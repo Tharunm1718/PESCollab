@@ -8,7 +8,7 @@ function MyProfileRedirect() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     async function go() {
-      const res = await fetch(" http://localhost:3000//auth/me", {
+      const res = await fetch(" https://pes-collab-server.vercel.app//auth/me", {
         headers: {
           Authorization: `Bearer ${token}`
         },
