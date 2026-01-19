@@ -12,21 +12,19 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 let port = 3000;
 app.use(cors({
-  origin: ["https://pes-collab.vercel.app"],
-  credentials: true,
-  methods: ["GET","POST","OPTIONS"],
-  allowedHeaders: ["Content-Type","Authorization"]
+  origin: ['http://localhost:5173',"https://pescollab.vercel.app"],
+  credentials: true
 }));
 
 
-app.use(express.urlencoded({ extended: true, limit: '50mb' }));
-app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true, limit: '100mb' }));
+app.use(express.json({ limit: '100mb' }));
 
 const storage = multer.memoryStorage();
 const upload = multer({
   storage,
   limits: {
-    fileSize: 10 * 1024 * 1024,  
+    fileSize: 50 * 1024 * 1024,  
     files: 200                   
   }
 });
@@ -506,6 +504,9 @@ app.get("/profileview/:id", requireAuth, async (req, res) => {
       console.error(projecterr);
       return res.status(500).json({ success: false, message: "Failed to fetch projects" });
     }
+
+    const projectCount = projects.length
+
     const { data: contributionCount, error: countError } = await supabase
       .from("contributions")
       .select("project_id");
@@ -519,7 +520,20 @@ app.get("/profileview/:id", requireAuth, async (req, res) => {
       contributionMap[item.project_id] = (contributionMap[item.project_id] || 0) + 1;
     });
 
-    res.json({ success: true, userdata: userdata, contributionCount: count, projects: projects, projectContibution: contributionMap })
+    const{ data: memberData, error: memberError } = await supabase
+    .from("project_team_members")
+    .select("student_id")
+    .eq("owner_id", userdata.id);
+
+    if(memberError){
+      console.error(memberError);
+      return res.status(500).json({ success: false, message: "Failed to fetch member data" });
+    }
+
+    const memberDataCount = memberData.length;
+    console.log(memberDataCount,projectCount);
+
+    res.json({ success: true, userdata: userdata, contributionCount: count, projects: projects, projectContibution: contributionMap, memberDataCount: memberDataCount,projectCount: projectCount });
   } catch (err) {
     console.error(err);
     res.status(500).json({ success: false, message: "Server error" });
