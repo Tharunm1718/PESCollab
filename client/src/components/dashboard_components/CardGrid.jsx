@@ -19,7 +19,7 @@ function CardGrid({ mode }) {
       try {
         const token = localStorage.getItem('token');
         setLoading(true);
-        const response = await fetch(" https://pes-collab-server.vercel.app/yourprojects", {
+        const response = await fetch(" https://pes-collab-3jcl.vercel.app/yourprojects", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

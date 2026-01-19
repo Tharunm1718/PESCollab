@@ -5,6 +5,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { use } from "react";
 import Snowfall from "react-snowfall";
 
+
 function Login() {
     const navigate = useNavigate();
     const [formdata, setFormData] = useState({
@@ -52,7 +53,7 @@ function Login() {
     
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = await fetch(' https://pes-collab-server.vercel.app/', {
+        const response = await fetch(' https://pes-collab-3jcl.vercel.app/', {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ usn: formdata.usn, password: formdata.password }),

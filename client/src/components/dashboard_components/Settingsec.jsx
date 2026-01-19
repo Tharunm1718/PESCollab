@@ -18,7 +18,7 @@ function SettingSection({ mode }) {
         const token = localStorage.getItem('token');
         try {
             if (token) {
-                await fetch(" https://pes-collab-server.vercel.app/logout", {
+                await fetch(" https://pes-collab-3jcl.vercel.app/logout", {
                     method: "POST",
                     credentials: "include",
                     headers: {
@@ -37,7 +37,7 @@ function SettingSection({ mode }) {
             try {
                 setLoading(true);
                 const token = localStorage.getItem('token');
-                const res = await fetch(' https://pes-collab-server.vercel.app/settings', {
+                const res = await fetch(' https://pes-collab-3jcl.vercel.app/settings', {
                     method: 'GET',
                     credentials: 'include',
                     headers: {
@@ -64,7 +64,7 @@ function SettingSection({ mode }) {
 
     const handleSave = async () => {
         const token = localStorage.getItem('token');
-        await fetch(" https://pes-collab-server.vercel.app/settings/update", {
+        await fetch(" https://pes-collab-3jcl.vercel.app/settings/update", {
             method: "POST",
             credentials: "include",
             headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },

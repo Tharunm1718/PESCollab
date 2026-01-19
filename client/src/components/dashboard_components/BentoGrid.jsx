@@ -34,7 +34,7 @@ const BentoGrid = () => {
       try {
         const token = localStorage.getItem('token');
         setLoading(true);
-        const response = await fetch(' https://pes-collab-server.vercel.app/dashboard', {
+        const response = await fetch(' https://pes-collab-3jcl.vercel.app/dashboard', {
           method: 'GET',
           headers: {
             "Content-Type": "application/json",

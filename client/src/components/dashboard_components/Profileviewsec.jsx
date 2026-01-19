@@ -12,7 +12,8 @@ function Profileviewsection() {
   const [projects, setProjects] = useState([]);
   const [contributionCounts, setContributionCounts] = useState({});
   const [loading, setLoading] = useState(true);
-
+  const [projectCount, setProjectCount] = useState(0);
+  const [memberDataCount, setMemberDataCount] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,7 +21,7 @@ function Profileviewsection() {
         const token = localStorage.getItem('token');
         setLoading(true);
         const response = await fetch(
-          ` https://pes-collab-server.vercel.app/profileview/${id}`,
+          ` https://pes-collab-3jcl.vercel.app/profileview/${id}`,
           {
             method: "GET",
             headers: {
@@ -37,6 +38,8 @@ function Profileviewsection() {
           setconCount(result.contributionCount)
           setProjects(result.projects)
           setContributionCounts(result.projectContibution)
+          setProjectCount(result.projectCount)
+          setMemberDataCount(result.memberDataCount)
         }
       } catch (err) {
         console.error("Profile fetch failed", err);
@@ -63,7 +66,7 @@ function Profileviewsection() {
       <div className="rectangle-bg">
         <Header title="PES COMMUNITY" />
         <div className="divider-line"></div>
-        {user && <ProfileDivision user={user} id={id} conCount={conCount} />}
+        {user && <ProfileDivision user={user} id={id} conCount={conCount} projectCount={projectCount} memberDataCount={memberDataCount} />}
         <CommunityFileList mode={"USER_PROJECTS"} data={{ projects, contributionCounts }} />
       </div>
     </div>

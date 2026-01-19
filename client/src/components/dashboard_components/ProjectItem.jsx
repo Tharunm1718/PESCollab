@@ -8,7 +8,7 @@ const ProjectItem = ({ project_id, repoName, views, contributors, mode, name }) 
 
     const token = localStorage.getItem('token');
     
-    const handleviews = fetch(` https://pes-collab-server.vercel.app/incrementview/${project_id}`, {
+    const handleviews = fetch(` https://pes-collab-3jcl.vercel.app/incrementview/${project_id}`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`

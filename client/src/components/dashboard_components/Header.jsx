@@ -10,7 +10,7 @@ const Header = (props) => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     async function go() {
-      const res = await fetch(" https://pes-collab-server.vercel.app/auth/me", {
+      const res = await fetch(" https://pes-collab-3jcl.vercel.app/auth/me", {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`

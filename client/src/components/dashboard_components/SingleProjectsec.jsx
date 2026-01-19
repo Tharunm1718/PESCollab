@@ -20,7 +20,7 @@ function SingleProjectSection({ title }) {
       try {
         setLoading(true);
         const response = await fetch(
-          ` https://pes-collab-server.vercel.app/projectfiles/${id}`, {
+          ` https://pes-collab-3jcl.vercel.app/projectfiles/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`
           },

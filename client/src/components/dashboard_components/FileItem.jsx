@@ -20,7 +20,7 @@ export default function FileItem({
     }
     try {
       const response = await fetch(
-        ` https://pes-collab-server.vercel.app/contributions/${downloadId}/download`,
+        ` https://pes-collab-3jcl.vercel.app/contributions/${downloadId}/download`,
         {
           method: "GET",
           headers: {

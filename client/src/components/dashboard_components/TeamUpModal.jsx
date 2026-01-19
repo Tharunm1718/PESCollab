@@ -20,7 +20,7 @@ function TeamUpModal({ isOpen, onClose, studentId, onSuccess }) {
       const token = localStorage.getItem('token');
       setLoading(true);
       setError(null);
-      const response = await fetch(' https://pes-collab-server.vercel.app/yourprojects', {
+      const response = await fetch(' https://pes-collab-3jcl.vercel.app/yourprojects', {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`
@@ -44,7 +44,7 @@ function TeamUpModal({ isOpen, onClose, studentId, onSuccess }) {
       const token = localStorage.getItem('token');
       setSending(true);
       setError(null);
-      const response = await fetch(` https://pes-collab-server.vercel.app/projects/${projectId}/add-member`, {
+      const response = await fetch(` https://pes-collab-3jcl.vercel.app/projects/${projectId}/add-member`, {
         method: 'POST',
         credentials: 'include',
         headers: {

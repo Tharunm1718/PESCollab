@@ -3,7 +3,7 @@ import { useInteractiveCard } from "./useInteractiveEffects";
 import Footer from "./ProfileDiv-Footer";
 import TeamUpModal from "./TeamUpModal";
 
-function ProfileDivision({ user, id, conCount }) {
+function ProfileDivision({ user, id, conCount, projectCount,memberDataCount }) {
     const cardRef = useInteractiveCard();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [successMessage, setSuccessMessage] = useState(null);
@@ -27,7 +27,7 @@ function ProfileDivision({ user, id, conCount }) {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-        fetch(" https://pes-collab-server.vercel.app/auth/me", {
+        fetch(" https://pes-collab-3jcl.vercel.app/auth/me", {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`
@@ -75,8 +75,8 @@ function ProfileDivision({ user, id, conCount }) {
                     </div>
                     <div className="footer">
                         <Footer Count={conCount} title={"Contribution"} />
-                        <Footer Count={5} title={"Projects"} />
-                        <Footer Count={50} title={"TeamMates"} />
+                        <Footer Count={projectCount} title={"Projects"} />
+                        <Footer Count={memberDataCount} title={"TeamMates"} />
                     </div>
                 </div>
             </div>

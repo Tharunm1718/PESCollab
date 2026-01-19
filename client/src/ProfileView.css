@@ -167,3 +167,9 @@
         opacity: 1;
     }
 }
+
+.list-icon {
+    width: 5vw;
+    height: 5vw;
+    color: #A347FF;
+}
