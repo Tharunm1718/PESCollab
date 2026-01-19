@@ -12,8 +12,10 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 let port = 3000;
 app.use(cors({
-  origin: 'https://pes-collab.vercel.app',
-  credentials: true
+  origin: ["https://pes-collab.vercel.app"],
+  credentials: true,
+  methods: ["GET","POST","OPTIONS"],
+  allowedHeaders: ["Content-Type","Authorization"]
 }));
 
 
